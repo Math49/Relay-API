@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('ID_user');
-            $table->string('name', length:50);
+            $table->string('Name', length:50);
             $table->string('Password');
             $table->boolean('Is_admin');
             $table->foreignId('Id_store')->index();
