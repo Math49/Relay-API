@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use Exception;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -85,5 +85,6 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
 }
 

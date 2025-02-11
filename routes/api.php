@@ -2,20 +2,24 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-// Route d'inscription (register)
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+
+// Routes d'authetifications
 Route::post('/register', [AuthController::class, 'register']);
-
-// Route de connexion (login)
 Route::post('/login', [AuthController::class, 'login']);
-
-// Groupe de routes protégées par Sanctum
 Route::middleware('auth:sanctum')->group(function () {
-    
-    // Route de déconnexion (logout)
     Route::post('/logout', [AuthController::class, 'logout']);
+});
 
+// Routes user
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users', [UserController::class, 'allUsers']);
+    Route::get('/user/{id}', [UserController::class, 'userByID']);
+    Route::post('/user', [UserController::class, 'createUser']);
+    Route::put('/user/{id}', [UserController::class, 'updateUser']);
+    Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
 });
