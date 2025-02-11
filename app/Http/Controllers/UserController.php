@@ -57,10 +57,10 @@ class UserController extends Controller
     public function createUser(Request $request){
         try{
             $request->validate([
-                'Name' => 'required|string|max:255',
+                'Name' => 'required|string|max:50',
                 'Password' => 'required|string|min:6',
                 'Is_admin' => 'boolean',
-                'Id_store' => 'nullable|integer',
+                'Id_store' => 'integer',
             ]);
             
             $user = User::create([

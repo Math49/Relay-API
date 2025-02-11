@@ -7,6 +7,7 @@ use Illuminate\Validation\ValidationException;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StoreController;
 
 // Routes d'authetifications
 Route::post('/register', [AuthController::class, 'register']);
@@ -22,4 +23,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user', [UserController::class, 'createUser']);
     Route::put('/user/{id}', [UserController::class, 'updateUser']);
     Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
+});
+
+//Routes magasins
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/stores', [StoreController::class, 'AllStores']);
+    Route::get('/store/{id}', [StoreController::class, 'StoreByID']);
+    Route::post('/store', [StoreController::class, 'createStore']);
+    Route::put('/store/{id}', [StoreController::class, 'updateStore']);
+    Route::delete('/store/{id}', [StoreController::class, 'deleteStore']);
 });
