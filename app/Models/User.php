@@ -26,7 +26,8 @@ class User extends Authenticatable
         'Name',
         'Password',
         'Is_admin',
-        'Id_store',
+        'ID_store',
+        'remember_token',
     ];
 
     /**
@@ -49,5 +50,10 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'ID_store', 'ID_store');
     }
 }

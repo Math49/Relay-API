@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class AuthController extends Controller
@@ -21,7 +22,7 @@ class AuthController extends Controller
                 'Name' => $request->Name,
                 'Password' => Hash::make($request->Password),
                 'Is_admin' => $request->Is_admin ?? false,
-                'Id_store' => $request->Id_store,
+                'ID_store' => $request->ID_store,
             ]);
             
             return response()->json([

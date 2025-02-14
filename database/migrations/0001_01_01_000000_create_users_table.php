@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('Name', length:50);
             $table->string('Password');
             $table->boolean('Is_admin');
-            $table->foreignId('Id_store')->index();
+            $table->foreignId('ID_store')->index();
             $table->rememberToken();
             $table->timestamps();
         });

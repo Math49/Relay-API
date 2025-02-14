@@ -11,7 +11,7 @@ class UserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,6 +21,10 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('get')) {
+            return [];
+        }
+
         return [
             'Name' => 'required|string|max:50',
             'Password' => 'required|string|min:6',

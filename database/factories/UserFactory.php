@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Store;
 
-
 class UserFactory extends Factory
 {
     protected static ?string $password;
@@ -18,17 +17,25 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'password' => static::$password ??= Hash::make('password'),
-            'is_admin' => false,
-            'id_store' => Store::factory(),
+            'Name' =>  $this->faker->name,
+            'Password' => static::$password ??= Hash::make('password'),
+            'Is_admin' => false,
+            'ID_store' => null, // 👈 On ne génère PAS de store automatiquement
+            'remember_token' => Str::random(10),
         ];
+    }
+
+    public function withStore(): Factory
+    {
+        return $this->state(fn (array $attributes) => [
+            'ID_store' => Store::factory()->create()->ID_store, // ✅ Générer un store seulement si besoin
+        ]);
     }
 
     public function admin(): Factory
     {
         return $this->state(fn (array $attributes) => [
-            'is_admin' => true,
+            'Is_admin' => true,
         ]);
     }
 }

@@ -13,6 +13,7 @@ class UserController extends Controller
     // GET /users
     public function allUsers(UserRequest $request){
         try{
+
             $users = User::all();
             
             if($request->header('Accept') === 'application/json'){
@@ -63,7 +64,7 @@ class UserController extends Controller
                 'Name' => $request->Name,
                 'Password' => Hash::make($request->Password),
                 'Is_admin' => $request->Is_admin ?? false,
-                'Id_store' => $request->Id_store,
+                'ID_store' => $request->ID_store,
             ]);
             
             return response()->json([
@@ -92,7 +93,7 @@ class UserController extends Controller
                 $user->Name = $request->Name ?? $user->Name;
                 $user->Password = $request->Password ? Hash::make($request->Password) : $user->Password;
                 $user->Is_admin = $request->Is_admin ?? $user->Is_admin;
-                $user->Id_store = $request->Id_store ?? $user->Id_store;
+                $user->ID_store = $request->ID_store ?? $user->ID_store;
                 
                 $user->save();
                 
