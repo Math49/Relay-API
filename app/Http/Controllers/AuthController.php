@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -11,15 +12,10 @@ use Exception;
 class AuthController extends Controller
 {
     // POST /register
-    public function register(Request $request)
+    public function register(UserRequest $request)
     {
         try{
-            $request->validate([
-                'Name' => 'required|string|max:255',
-                'Password' => 'required|string|min:6',
-                'Is_admin' => 'boolean',
-                'Id_store' => 'nullable|integer',
-            ]);
+            $request->validated();
             
             $user = User::create([
                 'Name' => $request->Name,

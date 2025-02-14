@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use app\Models\User;
 use Exception;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     // GET /users
-    public function allUsers(Request $request){
+    public function allUsers(UserRequest $request){
         try{
             $users = User::all();
             
@@ -29,7 +30,7 @@ class UserController extends Controller
     }
 
     // GET /user/{id}
-    public function userByID(Request $request, $id){
+    public function userByID(UserRequest $request, $id){
         try{
             $user = User::find($id);
             
@@ -54,14 +55,9 @@ class UserController extends Controller
     }
 
     // POST /user
-    public function createUser(Request $request){
+    public function createUser(UserRequest $request){
         try{
-            $request->validate([
-                'Name' => 'required|string|max:50',
-                'Password' => 'required|string|min:6',
-                'Is_admin' => 'boolean',
-                'Id_store' => 'integer',
-            ]);
+            $request->validated();
             
             $user = User::create([
                 'Name' => $request->Name,
@@ -85,18 +81,13 @@ class UserController extends Controller
     }
 
     // PUT /user/{id}
-    public function updateUser(Request $request, $id){
+    public function updateUser(UserRequest $request, $id){
         try{
 
             $user = User::find($id);
 
             if($user){
-                $request->validate([
-                    'Name' => 'string|max:255',
-                    'Password' => 'string|min:6',
-                    'Is_admin' => 'boolean',
-                    'Id_store' => 'nullable|integer',
-                ]);
+                $request->validated();
                 
                 $user->Name = $request->Name ?? $user->Name;
                 $user->Password = $request->Password ? Hash::make($request->Password) : $user->Password;

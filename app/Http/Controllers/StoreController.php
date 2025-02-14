@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRequest;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Store;
@@ -53,14 +54,9 @@ class StoreController extends Controller
     }
 
     // POST /store
-    public function createStore(Request $request){
+    public function createStore(StoreRequest $request){
         try{
-            $request->validate([
-                'Address' => 'required|string|max:50',
-                'Phone' => 'required|string|max:10|min:10',
-                'Manager_name' => 'required|string|max:50',
-                'Manager_phone' => 'required|string|max:10|min:10'
-            ]);
+            $request->validated();
 
             $store = new Store();
             $store->Address = $request->input('Address');
@@ -86,10 +82,7 @@ class StoreController extends Controller
 
             if($store){
                 $request->validate([
-                    'Address' => 'required|string|max:50',
-                    'Phone' => 'required|string|max:10|min:10',
-                    'Manager_name' => 'required|string|max:50',
-                    'Manager_phone' => 'required|string|max:10|min:10'
+                    
                 ]);
 
                 $store->Address = $request->input('Address') ? $request->input('Address') : $store->Address;
