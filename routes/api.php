@@ -13,20 +13,18 @@ use App\Http\Controllers\StoreController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-// Routes user
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    // Routes user
     Route::get('/users', [UserController::class, 'allUsers']);
     Route::get('/user/{id}', [UserController::class, 'userByID']);
     Route::post('/user', [UserController::class, 'createUser']);
     Route::put('/user/{id}', [UserController::class, 'updateUser']);
     Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
-});
 
-//Routes magasins
-Route::middleware('auth:sanctum')->group(function () {
+    //Routes magasins
     Route::get('/stores', [StoreController::class, 'AllStores']);
     Route::get('/store/{id}', [StoreController::class, 'StoreByID']);
     Route::post('/store', [StoreController::class, 'createStore']);
