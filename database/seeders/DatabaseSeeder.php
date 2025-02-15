@@ -18,15 +18,28 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        Store::factory(10)
-            ->has(User::factory()->admin(), 'users')
-            ->has(User::factory(), 'users')
-            ->create();
+        $stores = Store::factory(5)->create();
 
-        Category::factory(10)->create();
+        // Création de catégories
+        $categories = Category::factory(10)->create();
 
-        CategoryEnable::factory(10)->create([
+        // Création d'un admin et d'utilisateurs normaux
+        User::factory()->admin()->withStore()->create([
+            'Name' => 'Admin User',
+            'Password' => bcrypt('adminpassword'),
         ]);
 
+        User::factory(10)->withStore()->create();
+
+        // Associer les catégories aux magasins (CategoryEnable)
+        foreach ($stores as $store) {
+            foreach ($categories->random(rand(3, 7)) as $category) {
+                CategoryEnable::factory()->create([
+                    'ID_category' => $category->id,
+                    'ID_store' => $store->ID_store,
+                    'Category_position' => rand(1, 100),
+                ]);
+            }
+        }
     }
 }

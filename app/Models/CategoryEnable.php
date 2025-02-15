@@ -2,9 +2,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CategoryEnable extends Model
 {
+
+    use HasFactory;
+
     protected $table = 'categories_enable';
     protected $fillable = ['ID_store', 'ID_category', 'Category_position'];
 
