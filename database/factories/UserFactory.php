@@ -20,7 +20,7 @@ class UserFactory extends Factory
             'Name' =>  $this->faker->name,
             'Password' => static::$password ??= Hash::make('password'),
             'Is_admin' => false,
-            'ID_store' => null, // 👈 On ne génère PAS de store automatiquement
+            'ID_store' => null,
             'remember_token' => Str::random(10),
         ];
     }
@@ -28,7 +28,7 @@ class UserFactory extends Factory
     public function withStore(): Factory
     {
         return $this->state(fn (array $attributes) => [
-            'ID_store' => Store::factory()->create()->ID_store, // ✅ Générer un store seulement si besoin
+            'ID_store' => Store::factory()->create()->ID_store,
         ]);
     }
 

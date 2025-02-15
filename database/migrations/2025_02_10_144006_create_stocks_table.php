@@ -15,6 +15,7 @@ return new class extends Migration
 
             $table->foreignId('ID_store')->index();
             $table->foreignId('ID_product')->index();
+            $table->interger('Nmb_Boxes');
             $table->integer('Quantity');
             $table->integer('Nmb_on_shelves');
             $table->boolean('Is_empty');

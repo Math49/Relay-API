@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\CategoryController;
 
 // Routes d'authetifications
 Route::post('/register', [AuthController::class, 'register']);
@@ -28,4 +29,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/store', [StoreController::class, 'createStore']);
     Route::put('/store/{id}', [StoreController::class, 'updateStore']);
     Route::delete('/store/{id}', [StoreController::class, 'deleteStore']);
+
+    //Routes categories
+    Route::get('/categories', [CategoryController::class, 'AllCategory']);
+    Route::post('/category', [CategoryController::class, 'CreateCategory']);
+    Route::put('/category/{id}', [CategoryController::class, 'UpdateCategory']);
+    Route::delete('/category/{id}', [CategoryController::class, 'DeleteCategory']);
+
+    //Routes categories enable
+    Route::get('/categoryEnable/{id_store}', [CategoryController::class, 'CategoryEnable']);
+    Route::post('/categoryEnable', [CategoryController::class, 'CreateCategoryEnable']);
+    Route::put('/categoryEnable/{id}', [CategoryController::class, 'UpdateCategoryEnable']);
+    Route::delete('/categoryEnable/{id}', [CategoryController::class, 'DeleteCategoryEnable']);
+
 });

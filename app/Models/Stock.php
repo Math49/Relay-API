@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Stock extends Model
 {
     protected $table = 'stocks';
-    protected $fillable = ['ID_store', 'ID_product', 'Quantity', 'Nmb_on_shelves', 'Is_empty'];
+    protected $fillable = ['ID_store', 'ID_product','Nmb_boxes', 'Quantity', 'Nmb_on_shelves', 'Is_empty'];
 
     // Un stock appartient à un magasin
     public function store()

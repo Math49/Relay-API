@@ -78,12 +78,12 @@ class StoreController extends Controller
     // PUT /store/{id}
     public function updateStore(Request $request, $id){
         try{
+
+
             $store = Store::find($id);
 
             if($store){
-                $request->validate([
-                    
-                ]);
+                $request->validated();
 
                 $store->Address = $request->input('Address') ? $request->input('Address') : $store->Address;
                 $store->Phone = $request->input('Phone') ? $request->input('Phone') : $store->Phone;
@@ -105,10 +105,10 @@ class StoreController extends Controller
         }
     }
 
-    // DELETE /store/{id}
-    public function deleteStore($id){
+    // DELETE /store
+    public function deleteStore(StoreRequest $request){
         try{
-            $store = Store::find($id);
+            $store = Store::find($request->input('ID_store'));
 
             if($store){
                 $store->delete();
