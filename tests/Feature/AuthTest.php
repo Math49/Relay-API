@@ -14,13 +14,11 @@ use PHPUnit\Framework\Attributes\Test;
 class AuthTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->artisan('migrate:fresh');
     }
-
     #[Test]
     public function a_user_can_register()
     {

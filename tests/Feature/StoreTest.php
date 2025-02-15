@@ -13,13 +13,11 @@ use PHPUnit\Framework\Attributes\Test;
 class StoreTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->artisan('migrate:fresh');
     }
-
     #[Test]
     public function an_authenticated_user_can_retrieve_all_stores()
     {
