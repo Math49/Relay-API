@@ -10,6 +10,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryEnableController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MessageController;
 
 // Routes d'authetifications
 Route::post('/register', [AuthController::class, 'register']);
@@ -44,5 +46,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/categoryEnable', [CategoryEnableController::class, 'CreateCategoryEnable']);
     Route::put('/categoryEnable/{id}', [CategoryEnableController::class, 'UpdateCategoryEnable']);
     Route::delete('/categoryEnable', [CategoryEnableController::class, 'DeleteCategoryEnable']);
+
+    //Routes products
+    Route::get('/products', [ProductController::class, 'AllProducts']);
+    Route::get('/product/{id}', [ProductController::class, 'ProductByID']);
+    Route::post('/product', [ProductController::class, 'CreateProduct']);
+    Route::put('/product/{id}', [ProductController::class, 'UpdateProduct']);
+    Route::delete('/product/{id}', [ProductController::class, 'DeleteProduct']);
+
+    //Routes messages
+    Route::get('/messages', [MessageController::class, 'AllMessages']);
+    Route::get('/messages/{ID_store}', [MessageController::class, 'MessagesByStore']);
+    Route::get('/message/{ID_message}', [MessageController::class, 'MessageByID']);
+    Route::post('/message', [MessageController::class, 'CreateMessage']);
+    Route::put('/message/{ID_message}', [MessageController::class, 'UpdateMessage']);
+    Route::delete('/message/{ID_message}', [MessageController::class, 'DeleteMessage']);
 
 });
