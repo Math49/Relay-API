@@ -12,6 +12,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryEnableController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\StockController;
 
 // Routes d'authetifications
 Route::post('/register', [AuthController::class, 'register']);
@@ -62,4 +63,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/message/{ID_message}', [MessageController::class, 'UpdateMessage']);
     Route::delete('/message/{ID_message}', [MessageController::class, 'DeleteMessage']);
 
+    //Routes stocks
+    Route::get('/stocks', [StockController::class, 'AllStocks']);
+    Route::get('/stock/{ID_store}', [StockController::class, 'StockByStore']);
+    Route::get('/stock/{ID_store}/{ID_product}', [StockController::class, 'StockByStoreAndProduct']);
+    Route::post('/stock', [StockController::class, 'CreateStock']);
+    Route::post('/stocks', [StockController::class, 'CreateStocks']);
+    Route::put('/stock/{ID_stock}', [StockController::class, 'UpdateStock']);
+    Route::put('/stocks/{ID_store}', [StockController::class, 'UpdateStocks']);
+    Route::delete('/stock/{ID_stock}', [StockController::class, 'DeleteStock']);
 });
