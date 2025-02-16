@@ -19,7 +19,7 @@ class CategoryEnableFactory extends Factory
         return [
             'ID_category' => null,
             'ID_store' => null,
-            'Category_position' => $this->faker->randomNumber(5),
+            'Category_position' => $this->faker->numberBetween(1, 5),
         ];
     }
 }
