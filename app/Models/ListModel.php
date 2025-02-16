@@ -15,10 +15,8 @@ class ListModel extends Model
         return $this->belongsTo(Store::class, 'ID_store', 'ID_store');
     }
 
-    // Une liste contient plusieurs produits
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'products__lists', 'ID_list', 'ID_product')
-                    ->withPivot('Quantity');
+    // Une liste contient des produits
+    public function productList(){
+        return $this->hasMany(ProductList::class, 'ID_list', 'ID_list');
     }
 }

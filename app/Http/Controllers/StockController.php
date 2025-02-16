@@ -12,7 +12,7 @@ class StockController extends Controller
     // GET /stocks
     public function AllStocks(StockRequest $request){
         try{
-            $stocks = Stock::all();
+            $stocks = Stock::all()->load('product');
             
             if($request->header('Accept') === 'application/json'){
                 return response()->json($stocks);
@@ -31,7 +31,7 @@ class StockController extends Controller
     // GET /stock/{ID_store}
     public function StockByStore(StockRequest $request, $ID_store){
         try{
-            $stocks = Stock::where('ID_store', $ID_store)->get();
+            $stocks = Stock::where('ID_store', $ID_store)->with('product')->get();
             
             if($stocks){
                 if($request->header('Accept') === 'application/json'){
