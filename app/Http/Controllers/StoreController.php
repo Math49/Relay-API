@@ -10,7 +10,7 @@ use App\Models\Store;
 class StoreController extends Controller
 {
     // GET /stores
-    public function AllStores(Request $request){
+    public function AllStores(StoreRequest $request){
         try{
             $stores = Store::all();
             
@@ -29,7 +29,7 @@ class StoreController extends Controller
     }
 
     // GET /store/{id}
-    public function StoreByID(Request $request, $id){
+    public function StoreByID(StoreRequest $request, $id){
         try{
             $store = Store::find($id);
             
@@ -76,7 +76,7 @@ class StoreController extends Controller
     }
 
     // PUT /store/{id}
-    public function updateStore(Request $request, $id){
+    public function updateStore(StoreRequest $request, $id){
         try{
 
 

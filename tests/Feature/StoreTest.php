@@ -17,14 +17,13 @@ class StoreTest extends TestCase
     {
         parent::setUp();
         $this->artisan('migrate:fresh');
+
+        $user = User::factory()->withStore()->create();
+        Sanctum::actingAs($user);
     }
     #[Test]
     public function an_authenticated_user_can_retrieve_all_stores()
     {
-        $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
-
         Store::factory(5)->create();
 
         $response = $this->getJson('/api/stores');
@@ -37,10 +36,6 @@ class StoreTest extends TestCase
     public function an_authenticated_user_can_retrieve_a_specific_store()
     {
         $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
-
-        $store = Store::factory()->create();
 
         $response = $this->getJson("/api/store/{$store->ID_store}");
 
@@ -51,10 +46,6 @@ class StoreTest extends TestCase
     #[Test]
     public function an_authenticated_user_can_create_a_store()
     {
-        $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
-
         $response = $this->postJson('/api/store', [
             'Address' => '123 Rue Exemple',
             'Phone' => '0123456789',
@@ -70,10 +61,6 @@ class StoreTest extends TestCase
     public function an_authenticated_user_can_update_a_store()
     {
         $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
-
-        $store = Store::factory()->create();
 
         $response = $this->putJson("/api/store/{$store->ID_store}", [
             'Address' => 'Nouvelle adresse',
@@ -87,12 +74,10 @@ class StoreTest extends TestCase
     public function an_authenticated_user_can_delete_a_store()
     {
         $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
 
-        $store = Store::factory()->create();
-
-        $response = $this->deleteJson("/api/store/{$store->ID_store}");
+        $response = $this->deleteJson("/api/store", [
+            'ID_store' => $store->ID_store,
+        ]);
 
         $response->assertStatus(200)
                  ->assertJson(['message' => 'Magasin supprimé avec succès']);

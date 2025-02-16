@@ -21,6 +21,9 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('get')) {
+            return [];
+        }
         return [
             'Address' => 'required|string|max:50',
             'Phone' => 'required|string|max:10|min:10',

@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategoryEnableRequest;
 use Illuminate\Http\Request;
+use App\Models\CategoryEnable;
 use Exception;
-use App\Models\Category;
 
-class CategoryController extends Controller
+class CategoryEnableController extends Controller
 {
-    // GET /categories
-    public function AllCategory(CategoryRequest $request){
+
+    // GET /categoryEnables
+    public function AllCategoryEnable(CategoryEnableRequest $request){
         try{
 
-            $categories = Category::all();
+            $categories = CategoryEnable::all();
             
             if($request->header('Accept') === 'application/json'){
                 return response()->json($categories);
@@ -29,15 +30,16 @@ class CategoryController extends Controller
         }
     }
 
-    // GET /category/{ID_category}
-    public function CategoryByID(CategoryRequest $request, $id_category){
+    // GET /categoryEnable/{id_store}
+    public function CategoryEnable(CategoryEnableRequest $request, $id_store){
         try{
 
-            $category = Category::find($id_category);
+
+            $categories = CategoryEnable::where('ID_store', $id_store)->category()->get();
             
-            if($category){
+            if($categories){
                 if($request->header('Accept') === 'application/json'){
-                    return response()->json($category);
+                    return response()->json($categories);
                 } else {
                     return response("Le format demandé n'est pas disponible", 406);
                 }
@@ -55,17 +57,19 @@ class CategoryController extends Controller
         }
     }
 
-    // POST /category
-    public function CreateCategory(CategoryRequest $request){
+    // POST /categoryEnable/{ID_store}
+    public function CreateCategoryEnable(CategoryEnableRequest $request, $id_store){
         try{
 
-            $request->validated();
+            $request->validated("category_enable");
 
-            $category = new Category();
-            $category->label = $request->input('label');
-            $category->save();
+            $categoryEnable = new CategoryEnable();
+
+            $categoryEnable->ID_category = $request->input('ID_category');
+            $categoryEnable->ID_store = $id_store;
+            $categoryEnable->Category_position = $request->input('Category_position');
             
-            return response()->json($category, 201);
+            return response()->json($categoryEnable, 201);
 
         }catch(Exception $e){
             return response()->json([
@@ -75,19 +79,19 @@ class CategoryController extends Controller
         }
     }
 
-    // PUT /category/{ID_category}
-    public function UpdateCategory(CategoryRequest $request, $id_category){
+    // PUT /categoryEnable/{ID_store}/{ID_category}
+    public function UpdatecategoryEnable(CategoryEnableRequest $request, $id_store, $id_category){
         try{
 
-            $category = Category::find($id_category);
+            $categoryEnable = CategoryEnable::where('ID_store', $id_store)->where('ID_category', $id_category)->first();
 
-            if($category){
-                $request->validated("category");
+            if($categoryEnable){
+                $request->validated("category_enable");
 
-                $category->label = $request->input('label') ? $request->input('label') : $category->label;
-                $category->save();
+                $categoryEnable->Category_position = $request->input('Category_position') ? $request->input('Category_position') : $categoryEnable->Category_position;
+                $categoryEnable->save();
                 
-                return response()->json($category, 200);
+                return response()->json($categoryEnable, 200);
             } else {
                 return response()->json([
                     'message' => 'Catégorie non trouvée'
@@ -102,14 +106,13 @@ class CategoryController extends Controller
         }
     }
 
-
-    // DELETE /category
-    public function DeleteCategory(CategoryRequest $request){
+     // DELETE /categoryEnable
+     public function DeleteCategoryEnable(CategoryEnableRequest $request){
         try{
-            $category = Category::find($request->input('ID_category'));
+            $categoryEnable = CategoryEnable::where('ID_category', $request->input('ID_category'))->where('ID_store', $request->input('ID_store'))->first();
 
-            if($category){
-                $category->delete();
+            if($categoryEnable){
+                $categoryEnable->delete();
                 
                 return response()->json([
                     'message' => 'Catégorie supprimée avec succès'
@@ -127,6 +130,4 @@ class CategoryController extends Controller
             ], 500);
         }
     }
-
-   
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryEnableController;
 
 // Routes d'authetifications
 Route::post('/register', [AuthController::class, 'register']);
@@ -32,14 +33,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Routes categories
     Route::get('/categories', [CategoryController::class, 'AllCategory']);
+    Route::get('/category/{id}', [CategoryController::class, 'CategoryByID']);
     Route::post('/category', [CategoryController::class, 'CreateCategory']);
     Route::put('/category/{id}', [CategoryController::class, 'UpdateCategory']);
-    Route::delete('/category/{id}', [CategoryController::class, 'DeleteCategory']);
+    Route::delete('/category', [CategoryController::class, 'DeleteCategory']);
 
     //Routes categories enable
-    Route::get('/categoryEnable/{id_store}', [CategoryController::class, 'CategoryEnable']);
-    Route::post('/categoryEnable', [CategoryController::class, 'CreateCategoryEnable']);
-    Route::put('/categoryEnable/{id}', [CategoryController::class, 'UpdateCategoryEnable']);
-    Route::delete('/categoryEnable/{id}', [CategoryController::class, 'DeleteCategoryEnable']);
+    Route::get('/categoryEnables', [CategoryEnableController::class, 'AllCategoryEnable']);
+    Route::get('/categoryEnable/{id_store}', [CategoryEnableController::class, 'CategoryEnable']);
+    Route::post('/categoryEnable', [CategoryEnableController::class, 'CreateCategoryEnable']);
+    Route::put('/categoryEnable/{id}', [CategoryEnableController::class, 'UpdateCategoryEnable']);
+    Route::delete('/categoryEnable', [CategoryEnableController::class, 'DeleteCategoryEnable']);
 
 });

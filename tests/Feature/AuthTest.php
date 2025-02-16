@@ -19,6 +19,7 @@ class AuthTest extends TestCase
         parent::setUp();
         $this->artisan('migrate:fresh');
     }
+    
     #[Test]
     public function a_user_can_register()
     {

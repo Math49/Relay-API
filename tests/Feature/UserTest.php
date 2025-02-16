@@ -18,14 +18,14 @@ class UserTest extends TestCase
     {
         parent::setUp();
         $this->artisan('migrate:fresh');
+
+        $user = User::factory()->withStore()->create();
+        Sanctum::actingAs($user);
     }
     #[Test]
     public function an_authenticated_user_can_retrieve_all_users()
     {
         $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-
-        Sanctum::actingAs($user);
         User::factory(5)->create(['ID_store' => $store->ID_store]);
         
         $response = $this->getJson('/api/users');
@@ -39,8 +39,6 @@ class UserTest extends TestCase
     {
         $store = Store::factory()->create();
         $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
 
         $response = $this->getJson("/api/user/{$user->ID_user}");
 
@@ -52,9 +50,6 @@ class UserTest extends TestCase
     public function an_authenticated_user_can_create_a_user()
     {
         $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
-    
         $response = $this->postJson('/api/user', [
             'Name' => 'New User',
             'Password' => 'password123',
@@ -71,8 +66,6 @@ class UserTest extends TestCase
     public function an_authenticated_user_can_update_a_user()
     {
         $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
 
         $user = User::factory()->create(['ID_store' => $store->ID_store]);
 
@@ -89,12 +82,12 @@ class UserTest extends TestCase
     public function an_authenticated_user_can_delete_a_user()
     {
         $store = Store::factory()->create();
-        $user = User::factory()->create(['ID_store' => $store->ID_store]);
-        Sanctum::actingAs($user);
 
         $user = User::factory()->create(['ID_store' => $store->ID_store]);
 
-        $response = $this->deleteJson("/api/user/{$user->ID_user}");
+        $response = $this->deleteJson("/api/user", [
+            'ID_user' => $user->ID_user,
+        ]);
 
         $response->assertStatus(200)
                  ->assertJson(['message' => 'Utilisateur supprimé avec succès']);
