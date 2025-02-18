@@ -1,85 +1,67 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
-use PHPUnit\Framework\Attributes\Test;
+use Illuminate\Support\Facades\Artisan;
 
-class StoreTest extends TestCase
-{
-    use RefreshDatabase, WithFaker;
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->artisan('migrate:fresh');
+uses(RefreshDatabase::class);
 
-        $user = User::factory()->withStore()->create();
-        Sanctum::actingAs($user);
-    }
-    #[Test]
-    public function an_authenticated_user_can_retrieve_all_stores()
-    {
-        Store::factory(5)->create();
+beforeEach(function () {
+    Artisan::call('migrate:fresh');
+    $user = User::factory()->withStore()->create();
+    Sanctum::actingAs($user);
+});
 
-        $response = $this->getJson('/api/stores');
+test('an authenticated user can retrieve all stores', function () {
+    Store::factory(5)->create();
 
-        $response->assertStatus(200)
-                 ->assertJsonCount(6);
-    }
+    $response = $this->getJson('/api/stores');
 
-    #[Test]
-    public function an_authenticated_user_can_retrieve_a_specific_store()
-    {
-        $store = Store::factory()->create();
+    $response->assertStatus(200)
+        ->assertJsonCount(6);
+});
 
-        $response = $this->getJson("/api/store/{$store->ID_store}");
+test('an authenticated user can retrieve a specific store', function () {
+    $store = Store::factory()->create();
 
-        $response->assertStatus(200)
-                 ->assertJson(['Address' => $store->Address]);
-    }
+    $response = $this->getJson("/api/store/{$store->ID_store}");
 
-    #[Test]
-    public function an_authenticated_user_can_create_a_store()
-    {
-        $response = $this->postJson('/api/store', [
-            'Address' => '123 Rue Exemple',
-            'Phone' => '0123456789',
-            'Manager_name' => 'John Doe',
-            'Manager_phone' => '0987654321',
-        ]);
+    $response->assertStatus(200)
+        ->assertJson(['Address' => $store->Address]);
+});
 
-        $response->assertStatus(201)
-                 ->assertJsonStructure(['Address', 'Phone', 'Manager_name']);
-    }
+test('an authenticated user can create a store', function () {
+    $response = $this->postJson('/api/store', [
+        'Address' => '123 Rue Exemple',
+        'Phone' => '0123456789',
+        'Manager_name' => 'John Doe',
+        'Manager_phone' => '0987654321',
+    ]);
 
-    #[Test]
-    public function an_authenticated_user_can_update_a_store()
-    {
-        $store = Store::factory()->create();
+    $response->assertStatus(201)
+        ->assertJsonStructure(['Address', 'Phone', 'Manager_name']);
+});
 
-        $response = $this->putJson("/api/store/{$store->ID_store}", [
-            'Address' => 'Nouvelle adresse',
-        ]);
+test('an authenticated user can update a store', function () {
+    $store = Store::factory()->create();
 
-        $response->assertStatus(200)
-                 ->assertJson(['Address' => 'Nouvelle adresse']);
-    }
+    $response = $this->putJson("/api/store/{$store->ID_store}", [
+        'Address' => 'Nouvelle adresse',
+    ]);
 
-    #[Test]
-    public function an_authenticated_user_can_delete_a_store()
-    {
-        $store = Store::factory()->create();
+    $response->assertStatus(200)
+        ->assertJson(['Address' => 'Nouvelle adresse']);
+});
 
-        $response = $this->deleteJson("/api/store", [
-            'ID_store' => $store->ID_store,
-        ]);
+test('an authenticated user can delete a store', function () {
+    $store = Store::factory()->create();
 
-        $response->assertStatus(200)
-                 ->assertJson(['message' => 'Magasin supprimé avec succès']);
-    }
-}
+    $response = $this->deleteJson("/api/store", [
+        'ID_store' => $store->ID_store,
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Magasin supprimé avec succès']);
+});
