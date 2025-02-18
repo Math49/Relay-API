@@ -25,10 +25,10 @@ class StoreRequest extends FormRequest
             return [];
         }
         return [
-            'Address' => 'required|string|max:50',
-            'Phone' => 'required|string|max:10|min:10',
-            'Manager_name' => 'required|string|max:50',
-            'Manager_phone' => 'required|string|max:10|min:10'
+            'Address' => 'string|max:50',
+            'Phone' => 'string|max:10|min:10',
+            'Manager_name' => 'string|max:50',
+            'Manager_phone' => 'string|max:10|min:10'
         ];
     }
 }

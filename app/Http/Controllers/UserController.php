@@ -118,7 +118,7 @@ class UserController extends Controller
     // DELETE /user
     public function deleteUser(UserRequest $request){
         try{
-            $user = User::find($request->input('ID_user'));
+            $user = User::find($request->ID_user);
 
             if($user){
                 $user->delete();

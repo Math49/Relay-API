@@ -26,8 +26,8 @@ class UserRequest extends FormRequest
         }
 
         return [
-            'Name' => 'required|string|max:50',
-            'Password' => 'required|string|min:6',
+            'Name' => 'string|max:50',
+            'Password' => 'string|min:6',
             'Is_admin' => 'boolean',
             'Id_store' => 'integer',
         ];

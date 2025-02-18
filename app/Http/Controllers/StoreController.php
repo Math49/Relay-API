@@ -108,7 +108,7 @@ class StoreController extends Controller
     // DELETE /store
     public function deleteStore(StoreRequest $request){
         try{
-            $store = Store::find($request->input('ID_store'));
+            $store = Store::find($request->ID_store);
 
             if($store){
                 $store->delete();

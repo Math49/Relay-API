@@ -25,14 +25,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id}', [UserController::class, 'userByID']);
     Route::post('/user', [UserController::class, 'createUser']);
     Route::put('/user/{id}', [UserController::class, 'updateUser']);
-    Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
+    Route::delete('/user', [UserController::class, 'deleteUser']);
 
     //Routes magasins
     Route::get('/stores', [StoreController::class, 'AllStores']);
     Route::get('/store/{id}', [StoreController::class, 'StoreByID']);
     Route::post('/store', [StoreController::class, 'createStore']);
     Route::put('/store/{id}', [StoreController::class, 'updateStore']);
-    Route::delete('/store/{id}', [StoreController::class, 'deleteStore']);
+    Route::delete('/store', [StoreController::class, 'deleteStore']);
 
     //Routes categories
     Route::get('/categories', [CategoryController::class, 'AllCategory']);
@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/product/{id}', [ProductController::class, 'ProductByID']);
     Route::post('/product', [ProductController::class, 'CreateProduct']);
     Route::put('/product/{id}', [ProductController::class, 'UpdateProduct']);
-    Route::delete('/product/{id}', [ProductController::class, 'DeleteProduct']);
+    Route::delete('/product', [ProductController::class, 'DeleteProduct']);
 
     //Routes messages
     Route::get('/messages', [MessageController::class, 'AllMessages']);
@@ -61,7 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/message/{ID_message}', [MessageController::class, 'MessageByID']);
     Route::post('/message', [MessageController::class, 'CreateMessage']);
     Route::put('/message/{ID_message}', [MessageController::class, 'UpdateMessage']);
-    Route::delete('/message/{ID_message}', [MessageController::class, 'DeleteMessage']);
+    Route::delete('/message', [MessageController::class, 'DeleteMessage']);
 
     //Routes stocks
     Route::get('/stocks', [StockController::class, 'AllStocks']);
@@ -71,5 +71,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/stocks', [StockController::class, 'CreateStocks']);
     Route::put('/stock/{ID_stock}', [StockController::class, 'UpdateStock']);
     Route::put('/stocks/{ID_store}', [StockController::class, 'UpdateStocks']);
-    Route::delete('/stock/{ID_stock}', [StockController::class, 'DeleteStock']);
+    Route::delete('/stock', [StockController::class, 'DeleteStock']);
 });
