@@ -31,7 +31,7 @@ class StoreController extends Controller
     // GET /store/{id}
     public function StoreByID(StoreRequest $request, $id){
         try{
-            $store = Store::find($id);
+            $store = Store::find($id)->load('categoriesEnabled','stocks.product' );
             
             if($store){
                 if($request->header('Accept') === 'application/json'){
@@ -59,10 +59,10 @@ class StoreController extends Controller
             $request->validated();
 
             $store = new Store();
-            $store->Address = $request->input('Address');
-            $store->Phone = $request->input('Phone');
-            $store->Manager_name = $request->input('Manager_name');
-            $store->Manager_phone = $request->input('Manager_phone');
+            $store->Address = $request->Address;
+            $store->Phone = $request->Phone;
+            $store->Manager_name = $request->Manager_name;
+            $store->Manager_phone = $request->Manager_phone;
             $store->save();
 
             return response()->json($store, 201);
@@ -85,10 +85,10 @@ class StoreController extends Controller
             if($store){
                 $request->validated();
 
-                $store->Address = $request->input('Address') ? $request->input('Address') : $store->Address;
-                $store->Phone = $request->input('Phone') ? $request->input('Phone') : $store->Phone;
-                $store->Manager_name = $request->input('Manager_name') ? $request->input('Manager_name') : $store->Manager_name;
-                $store->Manager_phone = $request->input('Manager_phone') ? $request->input('Manager_phone') : $store->Manager_phone;
+                $store->Address = $request->Address ? $request->Address : $store->Address;
+                $store->Phone = $request->Phone ? $request->Phone : $store->Phone;
+                $store->Manager_name = $request->Manager_name ? $request->Manager_name : $store->Manager_name;
+                $store->Manager_phone = $request->Manager_phone ? $request->Manager_phone : $store->Manager_phone;
                 $store->save();
 
                 return response()->json($store, 200);

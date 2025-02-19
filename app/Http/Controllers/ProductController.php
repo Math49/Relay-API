@@ -60,12 +60,12 @@ class ProductController extends Controller
             $request->validated();
 
             $product = new Product();
-            $product->Label = $request->input('Label');
-            $product->Box_quantity = $request->input('Box_quantity');
-            $product->Image = $request->input('Image');
-            $product->Packing = $request->input('Packing');
-            $product->Barcode = $request->input('Barcode');
-            $product->ID_category = $request->input('ID_category');
+            $product->Label = $request->Label;
+            $product->Box_quantity = $request->Box_quantity;
+            $product->Image = $request->Image;
+            $product->Packing = $request->Packing;
+            $product->Barcode = $request->Barcode;
+            $product->ID_category = $request->ID_category;
             $product->save();
 
             return response()->json($product, 201);
@@ -86,12 +86,12 @@ class ProductController extends Controller
             if($product){
                 $request->validated();
 
-                $product->Label = $request->input('Label') ? $request->input('Label') : $product->Label;
-                $product->Box_quantity = $request->input('Box_quantity') ? $request->input('Box_quantity') : $product->Box_quantity;
-                $product->Image = $request->input('Image') ? $request->input('Image') : $product->Image;
-                $product->Packing = $request->input('Packing') ? $request->input('Packing') : $product->Packing;
-                $product->Barcode = $request->input('Barcode') ? $request->input('Barcode') : $product->Barcode;
-                $product->ID_category = $request->input('ID_category') ? $request->input('ID_category') : $product->ID_category;
+                $product->Label = $request->Label ? $request->Label : $product->Label;
+                $product->Box_quantity = $request->Box_quantity ? $request->Box_quantity : $product->Box_quantity;
+                $product->Image = $request->Image ? $request->Image : $product->Image;
+                $product->Packing = $request->Packing ? $request->Packing : $product->Packing;
+                $product->Barcode = $request->Barcode ? $request->Barcode : $product->Barcode;
+                $product->ID_category = $request->ID_category ? $request->ID_category : $product->ID_category;
                 $product->save();
 
                 return response()->json($product, 200);
@@ -112,7 +112,7 @@ class ProductController extends Controller
     // DELETE /product
     public function DeleteProduct(ProductRequest $request){
         try{
-            $product = Product::find($request->input('ID_product'));
+            $product = Product::find($request->ID_product);
             
             if($product){
                 $product->delete();

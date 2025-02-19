@@ -14,7 +14,7 @@ class CategoryEnableController extends Controller
     public function AllCategoryEnable(CategoryEnableRequest $request){
         try{
 
-            $categories = CategoryEnable::all();
+            $categories = CategoryEnable::all()->load('category');
             
             if($request->header('Accept') === 'application/json'){
                 return response()->json($categories);
@@ -35,7 +35,7 @@ class CategoryEnableController extends Controller
         try{
 
 
-            $categories = CategoryEnable::where('ID_store', $id_store)->category()->get();
+            $categories = CategoryEnable::where('ID_store', $id_store)->load('category')->get();
             
             if($categories){
                 if($request->header('Accept') === 'application/json'){
@@ -65,9 +65,9 @@ class CategoryEnableController extends Controller
 
             $categoryEnable = new CategoryEnable();
 
-            $categoryEnable->ID_category = $request->input('ID_category');
+            $categoryEnable->ID_category = $request->ID_category;
             $categoryEnable->ID_store = $id_store;
-            $categoryEnable->Category_position = $request->input('Category_position');
+            $categoryEnable->Category_position = $request->Category_position;
             
             return response()->json($categoryEnable, 201);
 
@@ -88,7 +88,7 @@ class CategoryEnableController extends Controller
             if($categoryEnable){
                 $request->validated("category_enable");
 
-                $categoryEnable->Category_position = $request->input('Category_position') ? $request->input('Category_position') : $categoryEnable->Category_position;
+                $categoryEnable->Category_position = $request->Category_position ? $request->Category_position : $categoryEnable->Category_position;
                 $categoryEnable->save();
                 
                 return response()->json($categoryEnable, 200);
@@ -109,7 +109,7 @@ class CategoryEnableController extends Controller
      // DELETE /categoryEnable
      public function DeleteCategoryEnable(CategoryEnableRequest $request){
         try{
-            $categoryEnable = CategoryEnable::where('ID_category', $request->input('ID_category'))->where('ID_store', $request->input('ID_store'))->first();
+            $categoryEnable = CategoryEnable::where('ID_category', $request->ID_category)->where('ID_store', $request->ID_store)->first();
 
             if($categoryEnable){
                 $categoryEnable->delete();

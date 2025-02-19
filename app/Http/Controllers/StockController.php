@@ -85,9 +85,9 @@ class StockController extends Controller
             $request->validated();
 
             $stock = new Stock();
-            $stock->ID_product = $request->input('ID_product');
-            $stock->ID_store = $request->input('ID_store');
-            $stock->Quantity = $request->input('Quantity');
+            $stock->ID_product = $request->ID_product;
+            $stock->ID_store = $request->ID_store;
+            $stock->Quantity = $request->Quantity;
             $stock->save();
 
             return response()->json($stock, 201);
@@ -131,7 +131,7 @@ class StockController extends Controller
             $stock = Stock::where('ID_store', $ID_store)->where('ID_product', $ID_product)->first();
             
             if($stock){
-                $stock->Quantity = $request->input('Quantity');
+                $stock->Quantity = $request->Quantity;
                 $stock->save();
                 return response()->json($stock);
             } else {
@@ -176,7 +176,7 @@ class StockController extends Controller
     // DELETE /stock
     public function DeleteStock(StockRequest $request){
         try{
-            $stock = Stock::where('ID_store', $request->input('ID_store'))->where('ID_product', $request->input('ID_product'))->first();
+            $stock = Stock::where('ID_store', $request->ID_store)->where('ID_product', $request->ID_product)->first();
             
             if($stock){
                 $stock->delete();

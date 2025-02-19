@@ -86,10 +86,10 @@ class MessageController extends Controller
             $request->validated();
 
             $message = new Message();
-            $message->Message = $request->input('Message');
-            $message->Creation_date = $request->input('Creation_date');
-            $message->Deletion_date = $request->input('Deletion_date');
-            $message->ID_store = $request->input('ID_store');
+            $message->Message = $request->Message;
+            $message->Creation_date = $request->Creation_date;
+            $message->Deletion_date = $request->Deletion_date;
+            $message->ID_store = $request->ID_store;
             $message->save();
 
             return response()->json($message, 201);
@@ -111,10 +111,10 @@ class MessageController extends Controller
             if($message){
                 $request->validated();
 
-                $message->Message = $request->input('Message') ? $request->input('Message') : $message->Message;
-                $message->Creation_date = $request->input('Creation_date') ? $request->input('Creation_date') : $message->Creation_date;
-                $message->Deletion_date = $request->input('Deletion_date') ? $request->input('Deletion_date') : $message->Deletion_date;
-                $message->ID_store = $request->input('ID_store') ? $request->input('ID_store') : $message->ID_store;
+                $message->Message = $request->Message ? $request->Message : $message->Message;
+                $message->Creation_date = $request->Creation_date ? $request->Creation_date : $message->Creation_date;
+                $message->Deletion_date = $request->Deletion_date ? $request->Deletion_date : $message->Deletion_date;
+                $message->ID_store = $request->ID_store ? $request->ID_store : $message->ID_store;
                 $message->save();
 
                 return response()->json($message, 200);

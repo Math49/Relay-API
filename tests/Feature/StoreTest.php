@@ -2,17 +2,26 @@
 
 use App\Models\Store;
 use App\Models\User;
+use App\Models\Stock;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    Artisan::call('migrate:fresh');
+    DB::beginTransaction();
     $user = User::factory()->withStore()->create();
     Sanctum::actingAs($user);
 });
+afterEach(function () {
+    DB::rollBack();
+});
+
 
 test('an authenticated user can retrieve all stores', function () {
     Store::factory(5)->create();
@@ -25,7 +34,6 @@ test('an authenticated user can retrieve all stores', function () {
 
 test('an authenticated user can retrieve a specific store', function () {
     $store = Store::factory()->create();
-
     $response = $this->getJson("/api/store/{$store->ID_store}");
 
     $response->assertStatus(200)

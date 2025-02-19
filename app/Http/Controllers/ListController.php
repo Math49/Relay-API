@@ -31,7 +31,7 @@ class ListController extends Controller
     // GET /list/{ID_store}
     public function ListByStore(ListRequest $request, $ID_store){
         try{
-            $lists = ListModel::where('ID_store', $ID_store)->productList()->product()->get();
+            $lists = ListModel::where('ID_store', $ID_store)->load('productList.product')->get();
             
             if($lists){
                 if($request->header('Accept') === 'application/json'){

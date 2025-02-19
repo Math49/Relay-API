@@ -14,7 +14,7 @@ class UserController extends Controller
     public function allUsers(UserRequest $request){
         try{
 
-            $users = User::all();
+            $users = User::all()->load('store');
             
             if($request->header('Accept') === 'application/json'){
                 return response()->json($users);
@@ -33,7 +33,7 @@ class UserController extends Controller
     // GET /user/{id}
     public function userByID(UserRequest $request, $id){
         try{
-            $user = User::find($id);
+            $user = User::find($id)->load('store');
             
             if($user){
                 if($request->header('Accept') === 'application/json'){

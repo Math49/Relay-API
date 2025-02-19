@@ -5,13 +5,17 @@ use App\Models\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    Artisan::call('migrate:fresh');
+    DB::beginTransaction();
     $user = User::factory()->withStore()->create();
     Sanctum::actingAs($user);
+});
+afterEach(function () {
+    DB::rollBack();
 });
 
 test('an authenticated user can retrieve all users', function () {

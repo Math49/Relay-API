@@ -33,7 +33,7 @@ class CategoryController extends Controller
     public function CategoryByID(CategoryRequest $request, $id_category){
         try{
 
-            $category = Category::find($id_category);
+            $category = Category::find($id_category)->load('products');
             
             if($category){
                 if($request->header('Accept') === 'application/json'){
@@ -62,7 +62,7 @@ class CategoryController extends Controller
             $request->validated();
 
             $category = new Category();
-            $category->label = $request->input('label');
+            $category->label = $request->label;
             $category->save();
             
             return response()->json($category, 201);
@@ -84,7 +84,7 @@ class CategoryController extends Controller
             if($category){
                 $request->validated("category");
 
-                $category->label = $request->input('label') ? $request->input('label') : $category->label;
+                $category->label = $request->label ? $request->label : $category->label;
                 $category->save();
                 
                 return response()->json($category, 200);
@@ -106,7 +106,7 @@ class CategoryController extends Controller
     // DELETE /category
     public function DeleteCategory(CategoryRequest $request){
         try{
-            $category = Category::find($request->input('ID_category'));
+            $category = Category::find($request->ID_category);
 
             if($category){
                 $category->delete();

@@ -17,4 +17,10 @@ class Category extends Model
         return $this->hasMany(Product::class, 'ID_category', 'ID_category');
     }
 
+    // Une catégorie a plusieurs catégories activées
+    public function categoryEnables()
+    {
+        return $this->hasMany(CategoryEnable::class, 'ID_category', 'ID_category');
+    }
+
 }

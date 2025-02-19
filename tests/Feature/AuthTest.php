@@ -4,10 +4,17 @@ use App\Models\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
-beforeEach(fn () =>Artisan::call('migrate:fresh'));
+beforeEach(function () {
+    DB::beginTransaction();
+});
+afterEach(function () {
+    DB::rollBack();
+});
+
 
 test('a user can register', function () {
     $store = Store::factory()->create();
