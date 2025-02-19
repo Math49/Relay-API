@@ -32,28 +32,31 @@ class UserController extends Controller
 
     // GET /user/{id}
     public function userByID(UserRequest $request, $id){
-        try{
-            $user = User::find($id)->load('store');
-            
-            if($user){
-                if($request->header('Accept') === 'application/json'){
-                    return response()->json($user);
-                } else {
-                    return response("Le format demandé n'est pas disponible", 406);
-                }
-            } else {
+        try {
+            $user = User::find($id);
+    
+            if (!$user) {
                 return response()->json([
                     'message' => 'Utilisateur non trouvé'
                 ], 404);
             }
-
-        }catch(Exception $e){
+    
+            $user->load('store');
+    
+            if ($request->header('Accept') === 'application/json') {
+                return response()->json($user);
+            } else {
+                return response("Le format demandé n'est pas disponible", 406);
+            }
+    
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la récupération de l\'utilisateur',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
+    
 
     // POST /user
     public function createUser(UserRequest $request){

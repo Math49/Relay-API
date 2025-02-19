@@ -31,18 +31,21 @@ class StoreController extends Controller
     // GET /store/{id}
     public function StoreByID(StoreRequest $request, $id){
         try{
-            $store = Store::find($id)->load('categoriesEnabled','stocks.product' );
-            
-            if($store){
-                if($request->header('Accept') === 'application/json'){
-                    return response()->json($store);
-                } else {
-                    return response("Le format demandé n'est pas disponible", 406);
-                }
-            } else {
+            $store = Store::find($id);
+
+            if (!$store) { // Vérification avant d'exécuter load()
                 return response()->json([
                     'message' => 'Magasin non trouvé'
                 ], 404);
+            }
+
+            $store->load('categoriesEnabled','stocks.product');
+
+            
+            if($request->header('Accept') === 'application/json'){
+                return response()->json($store);
+            } else {
+                return response("Le format demandé n'est pas disponible", 406);
             }
 
         }catch(Exception $e){
