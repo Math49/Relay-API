@@ -8,6 +8,7 @@ class Stock extends Model
 {
     use HasFactory;
     protected $table = 'stocks';
+    protected $primaryKey = 'ID_stock';
     protected $fillable = ['ID_store', 'ID_product','Nmb_boxes', 'Quantity', 'Nmb_on_shelves', 'Is_empty'];
 
     // Un stock appartient à un magasin

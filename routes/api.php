@@ -44,8 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //Routes categories enable
     Route::get('/categoryEnables', [CategoryEnableController::class, 'AllCategoryEnable']);
     Route::get('/categoryEnable/{id_store}', [CategoryEnableController::class, 'CategoryEnable']);
-    Route::post('/categoryEnable', [CategoryEnableController::class, 'CreateCategoryEnable']);
-    Route::put('/categoryEnable/{id}', [CategoryEnableController::class, 'UpdateCategoryEnable']);
+    Route::post('/categoryEnable/{id_store}', [CategoryEnableController::class, 'CreateCategoryEnable']);
+    Route::put('/categoryEnable/{id_store}/{id_category}', [CategoryEnableController::class, 'UpdateCategoryEnable']);
     Route::delete('/categoryEnable', [CategoryEnableController::class, 'DeleteCategoryEnable']);
 
     //Routes products

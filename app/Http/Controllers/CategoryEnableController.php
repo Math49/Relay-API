@@ -35,19 +35,22 @@ class CategoryEnableController extends Controller
         try{
 
 
-            $categories = CategoryEnable::where('ID_store', $id_store)->load('category')->get();
-            
-            if($categories){
-                if($request->header('Accept') === 'application/json'){
-                    return response()->json($categories);
-                } else {
-                    return response("Le format demandé n'est pas disponible", 406);
-                }
-            } else {
+            $categories = CategoryEnable::where('ID_store', $id_store)->get();
+
+            if($categories->isEmpty()){
                 return response()->json([
                     'message' => 'Catégorie non trouvée'
                 ], 404);
             }
+            
+            $categories->load('category');
+
+            if($request->header('Accept') === 'application/json'){
+                return response()->json($categories);
+            } else {
+                return response("Le format demandé n'est pas disponible", 406);
+            }
+            
 
         }catch(Exception $e){
             return response()->json([
@@ -61,7 +64,7 @@ class CategoryEnableController extends Controller
     public function CreateCategoryEnable(CategoryEnableRequest $request, $id_store){
         try{
 
-            $request->validated("category_enable");
+            $request->validated();
 
             $categoryEnable = new CategoryEnable();
 
@@ -86,7 +89,7 @@ class CategoryEnableController extends Controller
             $categoryEnable = CategoryEnable::where('ID_store', $id_store)->where('ID_category', $id_category)->first();
 
             if($categoryEnable){
-                $request->validated("category_enable");
+                $request->validated();
 
                 $categoryEnable->Category_position = $request->Category_position ? $request->Category_position : $categoryEnable->Category_position;
                 $categoryEnable->save();

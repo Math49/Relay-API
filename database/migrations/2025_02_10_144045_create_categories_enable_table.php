@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories_enable', function (Blueprint $table) {
+            $table->id('ID_category_enable');
             $table->foreignId('ID_store')->index();
             $table->foreignId('ID_category')->index();
             $table->smallInteger('Category_position');
