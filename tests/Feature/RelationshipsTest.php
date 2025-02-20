@@ -126,14 +126,17 @@ test('a product has many stocks', function () {
 
 // ✅ Test relation Product → Lists (Un produit peut appartenir à plusieurs listes)
 test('a product belongs to many lists', function () {
-    $list1 = ListModel::factory()->create();
-    $list2 = ListModel::factory()->create();
     $product = Product::factory()->create();
+    $lists = ListModel::factory(2)->create();
 
-    $product->lists()->attach([$list1->ID_list, $list2->ID_list]);
+    foreach ($lists as $list) {
+        ProductList::factory()->create([
+            'ID_product' => $product->ID_product,
+            'ID_list' => $list->ID_list,
+        ]);
+    }
 
-    expect($product->lists)->toHaveCount(2);
-    expect($product->lists->first())->toBeInstanceOf(ListModel::class);
+    $this->assertCount(2, $product->lists);
 });
 
 // ✅ Test relation Message → Store (Un message appartient à un magasin)
@@ -179,4 +182,20 @@ test('a category has many category enables', function () {
 
     expect($category->categoryEnables)->toHaveCount(3);
     expect($category->categoryEnables->first())->toBeInstanceOf(CategoryEnable::class);
+});
+
+// ✅ Test relation List → Store (Une liste appartient à un magasin)
+test('a list belong to a store', function () {
+    $list = ListModel::factory()->create();
+
+    expect($list->store)->toBeInstanceOf(Store::class);
+});
+
+// ✅ Test relation List → ProductList (Une liste possède plusieurs liaisons)
+test('a list has many product_list entries', function () {
+    $list = ListModel::factory()->create();
+    ProductList::factory(3)->create(['ID_list' => $list->ID_list]);
+
+    expect($list->productLists)->toHaveCount(3);
+    expect($list->productLists->first())->toBeInstanceOf(ProductList::class);
 });

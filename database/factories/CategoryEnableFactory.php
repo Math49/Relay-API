@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use app\Models\Store;
+use app\Models\Category;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CategoryEnable>
@@ -17,8 +19,8 @@ class CategoryEnableFactory extends Factory
     public function definition(): array
     {
         return [
-            'ID_category' => null,
-            'ID_store' => null,
+            'ID_store' => Store::factory(),
+            'ID_category' => Category::factory(),
             'Category_position' => $this->faker->numberBetween(1, 5),
         ];
     }

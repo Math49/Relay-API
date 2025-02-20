@@ -20,7 +20,7 @@ class ListModel extends Model
     }
 
     // Une liste contient des produits
-    public function productList(){
+    public function productLists(){
         return $this->hasMany(ProductList::class, 'ID_list', 'ID_list');
     }
 }
