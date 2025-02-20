@@ -2,9 +2,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
+    use HasFactory;
     protected $table = 'products';
     protected $primaryKey = 'ID_product';
     protected $fillable = ['Label', 'Box_quantity', 'Image', 'Packing', 'Barcode', 'ID_category'];

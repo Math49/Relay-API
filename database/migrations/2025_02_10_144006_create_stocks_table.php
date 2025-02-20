@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('stocks', function (Blueprint $table) {
-
+            
             $table->foreignId('ID_store')->index();
             $table->foreignId('ID_product')->index();
             $table->integer('Nmb_Boxes');

@@ -2,21 +2,20 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StoreFactory extends Factory
 {
-
     protected $model = Store::class;
 
-    public function definition(): array
+    public function definition()
     {
         return [
-            'Address' => "{$this->faker->city}",
-            'Phone' => "0{$this->faker->numberBetween(100000000, 999999999)}",
+            'Address' => $this->faker->streetAddress,
+            'Phone' => $this->faker->numerify('0#########'), // Format français
             'Manager_name' => $this->faker->name,
-            'Manager_phone' => "0{$this->faker->numberBetween(100000000, 999999999)}",
+            'Manager_phone' => $this->faker->numerify('0#########'), // Format français
         ];
     }
 }
