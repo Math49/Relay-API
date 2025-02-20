@@ -29,14 +29,6 @@ test('an authenticated user can retrieve all users', function () {
         ->assertJsonCount(6); // 5 créés + 1 admin authentifié
 });
 
-// ❌ Test format de réponse non supporté
-test('unsupported response format for users returns 406', function () {
-    $response = $this->getJson('/api/users', ['Accept' => 'application/xml']);
-
-    $response->assertStatus(406)
-        ->assertSeeText("Le format demandé n'est pas disponible", false);
-});
-
 // ✅ Test récupération d'un utilisateur spécifique
 test('an authenticated user can retrieve a specific user', function () {
     $store = Store::factory()->create();
@@ -46,6 +38,58 @@ test('an authenticated user can retrieve a specific user', function () {
 
     $response->assertStatus(200)
         ->assertJson(['Name' => $user->Name]);
+});
+
+// ✅ Test création d'un utilisateur
+test('an authenticated user can create a user', function () {
+    $store = Store::factory()->create();
+    $response = $this->postJson('/api/user', [
+        'Name' => 'New User',
+        'Password' => 'password123',
+        'Is_admin' => false,
+        'ID_store' => $store->ID_store,
+    ]);
+
+    $response->assertStatus(201)
+        ->assertJsonStructure(['message', 'user']);
+});
+
+// ✅ Test mise à jour d'un utilisateur
+test('an authenticated user can update a user', function () {
+    $store = Store::factory()->create();
+    $user = User::factory()->create(['ID_store' => $store->ID_store]);
+
+    $response = $this->putJson("/api/user/{$user->ID_user}", [
+        'Name' => 'Updated Name',
+        'Password' => 'updatedpassword',
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Utilisateur modifié avec succès']);
+});
+
+// ✅ Test suppression d'un utilisateur
+test('an authenticated user can delete a user', function () {
+    $store = Store::factory()->create();
+    $user = User::factory()->create(['ID_store' => $store->ID_store]);
+
+    $response = $this->deleteJson("/api/user", [
+        'ID_user' => $user->ID_user,
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJson(['message' => 'Utilisateur supprimé avec succès']);
+});
+
+
+// 🛠 Tests d'erreurs
+
+// ❌ Test format de réponse non supporté
+test('unsupported response format for users returns 406', function () {
+    $response = $this->getJson('/api/users', ['Accept' => 'application/xml']);
+
+    $response->assertStatus(406)
+        ->assertSeeText("Le format demandé n'est pas disponible", false);
 });
 
 // ❌ Test récupération d'un utilisateur inexistant
@@ -67,40 +111,12 @@ test('unsupported response format for user returns 406', function () {
         ->assertSeeText("Le format demandé n'est pas disponible", false);
 });
 
-// ✅ Test création d'un utilisateur
-test('an authenticated user can create a user', function () {
-    $store = Store::factory()->create();
-    $response = $this->postJson('/api/user', [
-        'Name' => 'New User',
-        'Password' => 'password123',
-        'Is_admin' => false,
-        'ID_store' => $store->ID_store,
-    ]);
-
-    $response->assertStatus(201)
-        ->assertJsonStructure(['message', 'user']);
-});
-
 // ❌ Test création d'un utilisateur avec des champs manquants
 test('creating a user with missing fields fails', function () {
     $response = $this->postJson('/api/user', []);
 
     $response->assertStatus(500) // Laravel retourne 422 pour une validation échouée
         ->assertJson(['message' => 'Erreur lors de la création de l\'utilisateur']);
-});
-
-// ✅ Test mise à jour d'un utilisateur
-test('an authenticated user can update a user', function () {
-    $store = Store::factory()->create();
-    $user = User::factory()->create(['ID_store' => $store->ID_store]);
-
-    $response = $this->putJson("/api/user/{$user->ID_user}", [
-        'Name' => 'Updated Name',
-        'Password' => 'updatedpassword',
-    ]);
-
-    $response->assertStatus(200)
-        ->assertJson(['message' => 'Utilisateur modifié avec succès']);
 });
 
 // ❌ Test mise à jour d'un utilisateur inexistant
@@ -111,20 +127,6 @@ test('updating a non-existent user returns 404', function () {
 
     $response->assertStatus(404)
         ->assertJson(['message' => 'Utilisateur non trouvé']);
-});
-
-
-// ✅ Test suppression d'un utilisateur
-test('an authenticated user can delete a user', function () {
-    $store = Store::factory()->create();
-    $user = User::factory()->create(['ID_store' => $store->ID_store]);
-
-    $response = $this->deleteJson("/api/user", [
-        'ID_user' => $user->ID_user,
-    ]);
-
-    $response->assertStatus(200)
-        ->assertJson(['message' => 'Utilisateur supprimé avec succès']);
 });
 
 // ❌ Test suppression d'un utilisateur inexistant

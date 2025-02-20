@@ -25,9 +25,9 @@ class CategoryEnableRequest extends FormRequest
             return [];
         }
         return [
-            'ID_category' => 'required|integer',
-            'ID_store' => 'required|integer',
-            'Category_position' => 'required|integer',
+            'ID_category' => 'integer',
+            'ID_store' => 'integer',
+            'Category_position' => 'integer',
         ];
     }
 }

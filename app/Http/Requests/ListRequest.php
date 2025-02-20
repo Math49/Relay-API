@@ -22,8 +22,8 @@ class ListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ID_store' => 'required|integer|exists:stores,ID_store',
-            'Creation_date' => 'required|date',
+            'ID_store' => 'integer|exists:stores,ID_store',
+            'Creation_date' => 'date',
         ];
     }
 }

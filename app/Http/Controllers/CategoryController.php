@@ -33,19 +33,22 @@ class CategoryController extends Controller
     public function CategoryByID(CategoryRequest $request, $id_category){
         try{
 
-            $category = Category::find($id_category)->load('products');
-            
-            if($category){
-                if($request->header('Accept') === 'application/json'){
-                    return response()->json($category);
-                } else {
-                    return response("Le format demandé n'est pas disponible", 406);
-                }
-            } else {
+            $category = Category::find($id_category);
+
+            if(!$category){
                 return response()->json([
                     'message' => 'Catégorie non trouvée'
                 ], 404);
             }
+
+            $category->load('products');
+            
+            if($request->header('Accept') === 'application/json'){
+                return response()->json($category);
+            } else {
+                return response("Le format demandé n'est pas disponible", 406);
+            }
+            
 
         }catch(Exception $e){
             return response()->json([
@@ -62,7 +65,7 @@ class CategoryController extends Controller
             $request->validated();
 
             $category = new Category();
-            $category->label = $request->label;
+            $category->Label = $request->Label;
             $category->save();
             
             return response()->json($category, 201);
@@ -82,9 +85,9 @@ class CategoryController extends Controller
             $category = Category::find($id_category);
 
             if($category){
-                $request->validated("category");
+                $request->validated();
 
-                $category->label = $request->label ? $request->label : $category->label;
+                $category->Label = $request->Label ? $request->Label : $category->Label;
                 $category->save();
                 
                 return response()->json($category, 200);

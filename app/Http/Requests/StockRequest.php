@@ -22,9 +22,9 @@ class StockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ID_product' => 'required|integer|exists:products,ID_product',
-            'ID_store' => 'required|integer|exists:stores,ID_store',
-            'Quantity' => 'required|integer',
+            'ID_product' => 'integer|exists:products,ID_product',
+            'ID_store' => 'integer|exists:stores,ID_store',
+            'Quantity' => 'integer',
         ];
     }
 }

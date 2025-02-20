@@ -25,12 +25,12 @@ class ProductRequest extends FormRequest
             return [];
         }
         return [
-            'Label' => 'required|string|max:50',
-            'Box_quantity' => 'required|integer',
-            'Image' => 'required|string|max:255',
-            'Packing' => 'required|boolean',
-            'Barcode' => 'required|string|max:13|min:13',
-            'Category_id' => 'required|integer|exists:categories,ID_category',
+            'Label' => 'string|max:50',
+            'Box_quantity' => 'integer',
+            'Image' => 'string|max:255',
+            'Packing' => 'boolean',
+            'Barcode' => 'string|max:13|min:13',
+            'Category_id' => 'integer|exists:categories,ID_category',
         ];
     }
 }

@@ -25,7 +25,7 @@ class CategoryRequest extends FormRequest
             return [];
         }
         return [
-            'label' => 'required|string|max:255',
+            'Label' => 'string|max:255',
         ];
     }
 }

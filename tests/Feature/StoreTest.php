@@ -80,7 +80,7 @@ test('an authenticated user can delete a store', function () {
 
 // ❌ Test format de réponse non supporté
 test('unsupported response format for stores returns 406', function () {
-    $store = Store::factory()->create();
+    Store::factory()->create();
 
     $response = $this->get("/api/stores", [
         'Accept' => 'text/plain'

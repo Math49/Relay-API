@@ -25,10 +25,10 @@ class MessageRequest extends FormRequest
             return [];
         }
         return [
-            'Message' => 'required|text',
-            'Creation_date' => 'required|date',
-            'Deletion_date' => 'required|date',
-            'ID_store' => 'required|foreignId',
+            'Message' => 'text',
+            'Creation_date' => 'date',
+            'Deletion_date' => 'date',
+            'ID_store' => 'foreignId',
         ];
     }
 }
