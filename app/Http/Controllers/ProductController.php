@@ -10,7 +10,7 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     // GET /products
-    public function AllProduct(ProductRequest $request){
+    public function AllProducts(ProductRequest $request){
         try{
             $products = Product::all();
             

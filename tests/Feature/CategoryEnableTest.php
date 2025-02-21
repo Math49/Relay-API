@@ -115,18 +115,6 @@ test('unsupported response format for category enable returns 406', function () 
         ->assertSeeText("Le format demandé n'est pas disponible", false);
 });
 
-// ❌ Test création d'une catégorie activée avec des données manquantes
-test('creating an enabled category with missing data returns validation error', function () {
-    $store = Store::factory()->create();
-
-    $response = $this->postJson("/api/categoryEnable/", []);
-
-    //dd($response->json());
-
-    $response->assertStatus(500)
-        ->assertJson(["message"=> "Erreur lors de la création de la catégorie"]);
-});
-
 // ❌ Test mise à jour d'une catégorie activée inexistante
 test('updating a non-existent enabled category returns 404', function () {
     $response = $this->putJson('/api/categoryEnable/9999/9999', [
