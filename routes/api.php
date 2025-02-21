@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //Routes messages
     Route::get('/messages', [MessageController::class, 'AllMessages']);
     Route::get('/messages/{ID_store}', [MessageController::class, 'MessagesByStore']);
-    Route::get('/message/{ID_message}', [MessageController::class, 'MessageByID']);
+    Route::get('/message/{ID_store}/{ID_message}', [MessageController::class, 'MessageByID']);
     Route::post('/message', [MessageController::class, 'CreateMessage']);
     Route::put('/message/{ID_message}', [MessageController::class, 'UpdateMessage']);
     Route::delete('/message', [MessageController::class, 'DeleteMessage']);

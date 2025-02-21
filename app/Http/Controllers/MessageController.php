@@ -15,6 +15,12 @@ class MessageController extends Controller
         try{
             $messages = Message::all();
             
+            if($messages->isEmpty()){
+                return response()->json([
+                    'message' => 'Aucun message trouvé'
+                ], 404);
+            }
+
             if($request->header('Accept') === 'application/json'){
                 return response()->json($messages);
             } else {
@@ -28,13 +34,13 @@ class MessageController extends Controller
         }
     }
 
-    // GET /messages/{ID_store}
+    // GET /message/{ID_store}
     public function MessagesByStore(MessageRequest $request, $ID_store)
     {
         try{
             $messages = Message::where('ID_store', $ID_store)->get();
             
-            if($messages){
+            if($messages->isNotEmpty()){
                 if($request->header('Accept') === 'application/json'){
                     return response()->json($messages);
                 } else {
@@ -53,8 +59,8 @@ class MessageController extends Controller
         }
     }
 
-    // GET /messages/{ID_message}
-    public function MessageByID(MessageRequest $request, $ID_message)
+    // GET /message/{ID_store}/{ID_message}
+    public function MessageByID(MessageRequest $request, $ID_store, $ID_message)
     {
         try{
             $message = Message::find($ID_message);
@@ -78,7 +84,7 @@ class MessageController extends Controller
         }
     }
 
-    // POST /messages
+    // POST /message
     public function CreateMessage(MessageRequest $request)
     {
         try{
@@ -102,7 +108,7 @@ class MessageController extends Controller
         }
     }
 
-    // PUT /messages/{ID_message}
+    // PUT /message/{ID_message}
     public function UpdateMessage(MessageRequest $request, $ID_message)
     {
         try{
@@ -131,21 +137,17 @@ class MessageController extends Controller
         }
     }
 
-    // DELETE /messages
-    public function DeleteMessage(MessageRequest $request, $ID_message)
+    // DELETE /message
+    public function DeleteMessage(MessageRequest $request)
     {
         try{
-            $message = Message::find($ID_message);
+            $message = Message::find($request->ID_message);
             
             if($message){
                 $message->delete();
                 return response()->json([
                     'message' => 'Message supprimé'
                 ], 200);
-            } else {
-                return response()->json([
-                    'message' => 'Message non trouvé'
-                ], 404);
             }
         }catch(Exception $e){
             return response()->json([
