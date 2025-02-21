@@ -69,7 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/stock/{ID_store}/{ID_product}', [StockController::class, 'StockByStoreAndProduct']);
     Route::post('/stock', [StockController::class, 'CreateStock']);
     Route::post('/stocks', [StockController::class, 'CreateStocks']);
-    Route::put('/stock/{ID_stock}', [StockController::class, 'UpdateStock']);
+    Route::put('/stock/{ID_store}/{ID_product}', [StockController::class, 'UpdateStock']);
     Route::put('/stocks/{ID_store}', [StockController::class, 'UpdateStocks']);
     Route::delete('/stock', [StockController::class, 'DeleteStock']);
 });

@@ -25,6 +25,8 @@ class StockRequest extends FormRequest
             'ID_product' => 'integer|exists:products,ID_product',
             'ID_store' => 'integer|exists:stores,ID_store',
             'Quantity' => 'integer',
+            'Nmb_boxes' => 'integer',
+            'Nmb_on_shelves' => 'integer',
         ];
     }
 }
