@@ -11,16 +11,23 @@ class ListController extends Controller
 {
     // GET /lists
     public function AllLists(ListRequest $request){
-        try{
-            $lists = ListModel::all()->load('productList.product');
-            
-            if($request->header('Accept') === 'application/json'){
+        try {
+            $lists = ListModel::all();
+
+            if ($lists->isEmpty()) {
+                return response()->json([
+                    'message' => 'Aucune liste trouvée'
+                ], 404);
+            }
+
+            $lists->load('productLists.product');
+
+            if ($request->header('Accept') === 'application/json') {
                 return response()->json($lists);
             } else {
                 return response("Le format demandé n'est pas disponible", 406);
             }
-
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la récupération des listes',
                 'error' => $e->getMessage()
@@ -30,22 +37,23 @@ class ListController extends Controller
 
     // GET /list/{ID_store}
     public function ListByStore(ListRequest $request, $ID_store){
-        try{
-            $lists = ListModel::where('ID_store', $ID_store)->load('productList.product')->get();
-            
-            if($lists){
-                if($request->header('Accept') === 'application/json'){
-                    return response()->json($lists);
-                } else {
-                    return response("Le format demandé n'est pas disponible", 406);
-                }
-            } else {
+        try {
+            $lists = ListModel::where('ID_store', $ID_store)->get();
+
+            if ($lists->isEmpty()) {
                 return response()->json([
                     'message' => 'Liste non trouvée'
                 ], 404);
             }
 
-        }catch(Exception $e){
+            $lists->load('productLists.product');
+
+            if ($request->header('Accept') === 'application/json') {
+                return response()->json($lists);
+            } else {
+                return response("Le format demandé n'est pas disponible", 406);
+            }
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la récupération de la liste',
                 'error' => $e->getMessage()
@@ -53,24 +61,25 @@ class ListController extends Controller
         }
     }
 
-    // GET /list/{ID_list}
-    public function ListByID(ListRequest $request, $ID_list){
-        try{
-            $list = ListModel::find($ID_list)->load('productList.product');
-            
-            if($list){
-                if($request->header('Accept') === 'application/json'){
-                    return response()->json($list);
-                } else {
-                    return response("Le format demandé n'est pas disponible", 406);
-                }
-            } else {
+    // GET /list/{ID_store}/{ID_list}
+    public function ListByID(ListRequest $request, $ID_store, $ID_list){
+        try {
+            $list = ListModel::find($ID_list);
+
+            if (!$list) {
                 return response()->json([
                     'message' => 'Liste non trouvée'
                 ], 404);
             }
 
-        }catch(Exception $e){
+            $list->load('productLists.product');
+
+            if ($request->header('Accept') === 'application/json') {
+                return response()->json($list);
+            } else {
+                return response("Le format demandé n'est pas disponible", 406);
+            }
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la récupération de la liste',
                 'error' => $e->getMessage()
@@ -80,7 +89,7 @@ class ListController extends Controller
 
     // POST /list
     public function CreateList(ListRequest $request){
-        try{
+        try {
             $request->validated();
             $products = $request->products;
 
@@ -89,16 +98,15 @@ class ListController extends Controller
             $list->Creation_date = $request->Creation_date;
             $list->save();
 
-            foreach($products as $product){
-                $list->productList()->create([
+            foreach ($products as $product) {
+                $list->productLists()->create([
                     'ID_product' => $product['ID_product'],
                     'Quantity' => $product['Quantity']
                 ]);
             }
-            
-            return response()->json($list, 201);
 
-        }catch(Exception $e){
+            return response()->json($list, 201);
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la création de la liste',
                 'error' => $e->getMessage()
@@ -108,32 +116,32 @@ class ListController extends Controller
 
     // PUT /list/{ID_list}
     public function UpdateList(ListRequest $request, $ID_list){
-        try{
+        try {
             $request->validated();
             $list = ListModel::find($ID_list);
-            $products = $request->products;
 
-            if($list){
-                $list->ID_store = $request->ID_store;
-                $list->Creation_date = $request->Creation_date;
-                $list->save();
-
-                foreach($products as $product){
-                    $list->productList()->updateOrCreate([
-                        'ID_product' => $product['ID_product'] ? $product['ID_product'] : $product['ID_product']
-                    ], [
-                        'Quantity' => $product['Quantity'] ? $product['Quantity'] : $product['Quantity']
-                    ]);
-                }
-                
-                return response()->json($list, 200);
-            } else {
+            if (!$list) {
                 return response()->json([
                     'message' => 'Liste non trouvée'
                 ], 404);
             }
 
-        }catch(Exception $e){
+            $products = $request->products;
+
+            $list->ID_store = $request->ID_store ?? $list->ID_store;
+            $list->Creation_date = $request->Creation_date ?? $list->Creation_date;
+            $list->save();
+
+            foreach ($products as $product) {
+                $list->productLists()->updateOrCreate([
+                    'ID_product' => $product['ID_product']
+                ], [
+                    'Quantity' => $product['Quantity']
+                ]);
+            }
+
+            return response()->json($list, 200);
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la mise à jour de la liste',
                 'error' => $e->getMessage()
@@ -143,29 +151,24 @@ class ListController extends Controller
 
     // DELETE /list
     public function DeleteList(ListRequest $request){
-        try{
+        try {
             $ID_list = $request->ID_list;
-            $productLists = $request->productLists;
 
             $list = ListModel::find($ID_list);
-            
-            if($list){
-                $list->delete();
 
-                foreach($productLists as $productList){
-                    $list->productList()->where('ID_product', $productList['ID_product'])->delete();
-                }
-                
-                return response()->json([
-                    'message' => 'Liste supprimée'
-                ], 200);
-            } else {
+            if (!$list) {
                 return response()->json([
                     'message' => 'Liste non trouvée'
                 ], 404);
             }
 
-        }catch(Exception $e){
+            $list->productLists()->delete();
+            $list->delete();
+            
+            return response()->json([
+                'message' => 'Liste supprimée'
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la suppression de la liste',
                 'error' => $e->getMessage()
