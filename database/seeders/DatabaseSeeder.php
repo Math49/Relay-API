@@ -20,6 +20,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $user = User::create([
+            "name"=> "admin",
+            "password"=> bcrypt("admin"),
+            "is_admin"=> true,
+            "ID_store"=> 1,
+        ]);
+        $user->createToken('auth-token')->plainTextToken;
+
         // 🔹 Création des magasins avec des utilisateurs
         $stores = Store::factory(5)
             ->has(User::factory()->admin()->count(1), 'users') // 1 admin par magasin
