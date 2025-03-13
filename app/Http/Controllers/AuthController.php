@@ -59,7 +59,14 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'Connexion réussie',
-                'user' => $user,
+                'user' => [
+                    'ID_user' => $user->ID_user,
+                    'Name' => $user->Name,
+                    'Is_admin' => $user->Is_admin,
+                    'ID_store' => $user->ID_store,
+                    'created_at' => $user->created_at,
+                    'updated_at' => $user->updated_at
+                ],
                 'token' => $user->createToken('auth-token')->plainTextToken
             ]);
         } catch (Exception $e) {
