@@ -50,6 +50,12 @@ class DatabaseSeeder extends Seeder
         // 🔹 Création des produits et association à une catégorie
         $products = Product::factory(20)->create();
 
+        $products->each(function ($product) use ($categories) {
+            $product->update([
+                'ID_category' => $categories->random()->ID_category,
+            ]);
+        });
+
         // 🔹 Création des stocks dans chaque magasin
         $stores->each(function ($store) use ($products) {
             $products->each(function ($product) use ($store) {

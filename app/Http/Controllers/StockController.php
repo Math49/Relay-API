@@ -39,6 +39,9 @@ class StockController extends Controller
     // GET /stock/{ID_store}
     public function StockByStore(StockRequest $request, $ID_store){
         try{
+
+            
+
             $stocks = Stock::where('ID_store', $ID_store)->get();
             
             if(!$stocks->isEmpty()){

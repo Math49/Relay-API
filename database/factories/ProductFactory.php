@@ -21,4 +21,11 @@ class ProductFactory extends Factory
             'ID_category' => Category::factory(),
         ];
     }
+
+    public function withCategory($category): Factory
+    {
+        return $this->state(fn (array $attributes) => [
+            'ID_category' => $category,
+        ]);
+    }
 }
