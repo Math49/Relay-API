@@ -6,6 +6,7 @@ use App\Http\Requests\ListRequest;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\ListModel;
+use DateTime;
 
 class ListController extends Controller
 {
@@ -93,9 +94,11 @@ class ListController extends Controller
             $request->validated();
             $products = $request->products;
 
+            dump($products);
+
             $list = new ListModel;
             $list->ID_store = $request->ID_store;
-            $list->Creation_date = $request->Creation_date;
+            $list->Creation_date = DateTime::createFromFormat('Y-m-d H:i:s', $request->Creation_date)->format('Y-m-d H:i:s');
             $list->save();
 
             foreach ($products as $product) {

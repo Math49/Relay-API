@@ -23,7 +23,8 @@ class ListRequest extends FormRequest
     {
         return [
             'ID_store' => 'integer|exists:stores,ID_store',
-            'Creation_date' => 'date',
+            'Creation_date' => 'string',
+            'products' => 'array',
         ];
     }
 }
