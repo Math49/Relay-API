@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Exception;
 use App\Models\ListModel;
 use DateTime;
+use Illuminate\Support\Facades\Log;
 
 class ListController extends Controller
 {
     // GET /lists
-    public function AllLists(ListRequest $request){
+    public function AllLists(ListRequest $request)
+    {
         try {
             $lists = ListModel::all();
 
@@ -37,7 +39,8 @@ class ListController extends Controller
     }
 
     // GET /list/{ID_store}
-    public function ListByStore(ListRequest $request, $ID_store){
+    public function ListByStore(ListRequest $request, $ID_store)
+    {
         try {
             $lists = ListModel::where('ID_store', $ID_store)->get();
 
@@ -63,7 +66,8 @@ class ListController extends Controller
     }
 
     // GET /list/{ID_store}/{ID_list}
-    public function ListByID(ListRequest $request, $ID_store, $ID_list){
+    public function ListByID(ListRequest $request, $ID_store, $ID_list)
+    {
         try {
             $list = ListModel::find($ID_list);
 
@@ -89,7 +93,8 @@ class ListController extends Controller
     }
 
     // POST /list
-    public function CreateList(ListRequest $request){
+    public function CreateList(ListRequest $request)
+    {
         try {
             $request->validated();
             $products = $request->products;
@@ -115,10 +120,12 @@ class ListController extends Controller
         }
     }
 
-    // PUT /list/{ID_list}
-    public function UpdateList(ListRequest $request, $ID_list){
-        try {
+    // PUT /list
+    public function UpdateList(ListRequest $request)
+    {
             $request->validated();
+
+            $ID_list = $request->ID_list;
             $list = ListModel::find($ID_list);
 
             if (!$list) {
@@ -130,24 +137,20 @@ class ListController extends Controller
             $products = $request->products;
 
             foreach ($products as $product) {
-                $list->productLists()->updateOrCreate([
-                    'ID_product' => $product['ID_product']
-                ], [
-                    'Quantity' => $product['Quantity']
-                ]);
+                $list->productLists()
+                    ->where('ID_product', $product['ID_product'])
+                    ->where('ID_list', $ID_list)
+                    ->update([
+                        'Quantity' => $product['Quantity']
+                    ]);
             }
 
             return response()->json($list, 200);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => 'Erreur lors de la mise à jour de la liste',
-                'error' => $e->getMessage()
-            ], 500);
-        }
     }
 
     // DELETE /list
-    public function DeleteList(ListRequest $request){
+    public function DeleteList(ListRequest $request)
+    {
         try {
             $ID_list = $request->ID_list;
 
@@ -161,7 +164,7 @@ class ListController extends Controller
 
             $list->productLists()->delete();
             $list->delete();
-            
+
             return response()->json([
                 'message' => 'Liste supprimée'
             ], 200);

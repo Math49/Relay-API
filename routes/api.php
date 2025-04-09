@@ -83,6 +83,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/list/{ID_store}', [ListController::class, 'ListByStore']);
     Route::get('/list/{ID_store}/{ID_list}', [ListController::class, 'ListByID']);
     Route::post('/list', [ListController::class, 'CreateList']);
-    Route::put('/list/{ID_list}', [ListController::class, 'UpdateList']);
+    Route::put('/list', [ListController::class, 'UpdateList']);
     Route::delete('/list', [ListController::class, 'DeleteList']);
 });

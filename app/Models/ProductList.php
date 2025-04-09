@@ -8,6 +8,9 @@ class ProductList extends Model
 {
     use HasFactory;
     protected $table = 'products__lists';
+
+    protected $primaryKey = ['ID_product', 'ID_list'];
+    public $incrementing = false;
     protected $fillable = ['ID_product', 'ID_list', 'Quantity'];
     
     // Un lien appartient à un produit

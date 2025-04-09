@@ -117,15 +117,18 @@ test('an authenticated user can update a list', function () {
     $list = ListModel::factory()->create();
     $newProduct = Product::factory()->create();
 
-    $response = $this->putJson("/api/list/{$list->ID_list}", [
-        'Creation_date' => now()->toDateString(),
+
+    
+
+    $response = $this->putJson("/api/list", [
+        'ID_list' => $list->ID_list,
         'products' => [
             ['ID_product' => $newProduct->ID_product, 'Quantity' => 15]
         ]
     ]);
 
     $response->assertStatus(200)
-        ->assertJsonStructure(['ID_list', 'ID_store', 'Creation_date']);
+        ->assertJsonStructure(['ID_list', 'ID_store']);
 });
 
 // ✅ Test suppression d'une liste

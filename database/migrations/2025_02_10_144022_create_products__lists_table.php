@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('ID_product')->index();
             $table->foreignId('ID_list')->index();
             $table->integer('Quantity');
+            $table->primary(['ID_product', 'ID_list']);
             $table->timestamps();
         });
     }
