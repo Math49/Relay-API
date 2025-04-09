@@ -42,12 +42,14 @@ class StockController extends Controller
 
             
 
-            $stocks = Stock::where('ID_store', $ID_store)->get();
+            $stocks = Stock::where('ID_store', $ID_store)
+                        ->where('is_empty', '!=', 1)
+                       ->get();
             
             if(!$stocks->isEmpty()){
 
                 $stocks->load('product');
-
+               
                 if($request->header('Accept') === 'application/json'){
                     return response()->json($stocks);
                 } else {
@@ -123,7 +125,10 @@ class StockController extends Controller
             $stocks = $request->stocks;
             $stocksCreated = [];
 
+
             foreach($stocks as $stock){
+
+                
                 $newStock = new Stock();
                 $newStock->ID_product = $stock['ID_product'];
                 $newStock->ID_store = $stock['ID_store'];
@@ -176,11 +181,18 @@ class StockController extends Controller
             $stocksUpdated = [];
 
             foreach($stocks as $stock){
+                if($stock['Quantity'] == 0 && $stock['Nmb_boxes'] == 0){
+                    $Is_empty = true;
+                } else {
+                    $Is_empty = false;
+                }
+
                 $stockToUpdate = Stock::where('ID_store', $ID_store)->where('ID_product', $stock['ID_product'])->first();
                 if($stockToUpdate){
                     $stockToUpdate->Quantity = $stock['Quantity'] ?? $stockToUpdate->Quantity;
                     $stockToUpdate->Nmb_boxes = $stock['Nmb_boxes'] ?? $stockToUpdate->Nmb_boxes;
                     $stockToUpdate->Nmb_on_shelves = $stock['Nmb_on_shelves'] ?? $stockToUpdate->Nmb_on_shelves;
+                    $stockToUpdate->Is_empty = $Is_empty;
                     $stockToUpdate->save();
                     array_push($stocksUpdated, $stockToUpdate);
                 }else{
