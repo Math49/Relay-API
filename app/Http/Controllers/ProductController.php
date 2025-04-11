@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -71,6 +72,7 @@ class ProductController extends Controller
             return response()->json($product, 201);
 
         }catch(Exception $e){
+            Log::error('Erreur lors de la création du produit: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Erreur lors de la création du produit',
                 'error' => $e->getMessage()

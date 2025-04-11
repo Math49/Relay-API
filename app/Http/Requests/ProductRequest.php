@@ -27,10 +27,12 @@ class ProductRequest extends FormRequest
         return [
             'Label' => 'string|max:50',
             'Box_quantity' => 'integer',
-            'Image' => 'string|max:255',
+            'Image' => 'string|nullable',
             'Packing' => 'boolean',
             'Barcode' => 'string|max:13|min:13',
-            'Category_id' => 'integer|exists:categories,ID_category',
+            'ID_category' => 'integer|exists:categories,ID_category',
         ];
     }
+
+    
 }

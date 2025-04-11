@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id("ID_product");
             $table->string('Label', length:50);
             $table->integer('Box_quantity');
-            $table->string('Image', length:255);
+            $table->longText('Image')->nullable();
             $table->boolean('Packing');
             $table->char('Barcode', length:13);
             $table->foreignId('ID_category')->index();

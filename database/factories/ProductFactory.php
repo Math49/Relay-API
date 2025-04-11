@@ -15,7 +15,7 @@ class ProductFactory extends Factory
         return [
             'Label' => $this->faker->word,
             'Box_quantity' => $this->faker->numberBetween(1, 100),
-            'Image' => $this->faker->imageUrl(),
+            'Image' => 'data:image/png;base64,' . base64_encode($this->faker->image(null, 640, 480, null, true)),
             'Packing' => $this->faker->boolean(), // ✅ Génère true ou false
             'Barcode' => $this->faker->numerify('#############'), // Génère un code-barres 13 chiffres
             'ID_category' => Category::factory(),
