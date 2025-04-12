@@ -1,4 +1,4 @@
-name: 🚀 Deploy Laravel to PlanetHoster
+name: Deploy Laravel to PlanetHoster
 
 on:
   push:
