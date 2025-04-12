@@ -16,7 +16,7 @@ jobs:
       - name: 🔐 Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.HOST_SSH_KEY }}
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
       - name: 🚚 Deploy to PlanetHoster
         run: |
