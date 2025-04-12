@@ -1,13 +1,49 @@
-name: Deploy Laravel App
+name: 🚀 Deploy Laravel App
 
 on:
   push:
     branches:
-      - master
+      - master # ou main, selon ta branche
 
 jobs:
-  test:
+  deploy:
+    name: 🎉 Deploy to PlanetHoster
     runs-on: ubuntu-latest
+
     steps:
-      - name: Hello
-        run: echo "Workflow déclenché !"
+      - name: 📥 Clone repository
+        uses: actions/checkout@v3
+
+      - name: 📦 Install dependencies (no dev)
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: 🧪 Run Laravel commands (optional)
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: 🔐 Copy files to PlanetHoster via SSH
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: 5022
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "."
+          target: "relay-api"
+
+      - name: 🚀 Remote deploy steps via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: 5022
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd relay-api
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
