@@ -22,7 +22,7 @@ jobs:
         run: |
           ssh -p 5022 jnngjdpt@node165-eu.n0c.com << 'EOF'
           cd ~/relay-api
-          git pull origin main
+          git pull origin master
           ~/bin/php ~/bin/composer install --no-dev --optimize-autoloader
           ~/bin/php artisan migrate --force
           EOF
