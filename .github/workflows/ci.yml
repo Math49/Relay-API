@@ -1,9 +1,9 @@
-name: 🚀 Deploy Laravel App
+name: Deploy Laravel App
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -16,13 +16,13 @@ jobs:
       - name: 🔐 Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
+          ssh-private-key: ${{ secrets.HOST_SSH_KEY }}
 
       - name: 🚚 Deploy to PlanetHoster
         run: |
           ssh -p 5022 jnngjdpt@node165-eu.n0c.com << 'EOF'
           cd ~/relay-api
-          git pull origin master
+          git pull origin main
           ~/bin/php ~/bin/composer install --no-dev --optimize-autoloader
           ~/bin/php artisan migrate --force
           EOF
