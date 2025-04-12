@@ -1,27 +1,28 @@
-# .github/workflows/deploy.yml
-name: Deploy Laravel App
+name: 🚀 Deploy Laravel App
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: 📥 Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup SSH
+      - name: 🔐 Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: Deploy on PlanetHoster
+      - name: 🚚 Deploy to PlanetHoster
         run: |
-          ssh -o StrictHostKeyChecking=no -p 5022 jnngjdpt@node165-eu.n0c.com << 'EOF'
-            cd ~/relay-api
-            git pull origin main
-            composer install --no-dev --optimize-autoloader
-            php artisan migrate --force
+          ssh -p 5022 jnngjdpt@node165-eu.n0c.com << 'EOF'
+          cd ~/relay-api
+          git pull origin master
+          ~/bin/php ~/bin/composer install --no-dev --optimize-autoloader
+          ~/bin/php artisan migrate --force
           EOF
