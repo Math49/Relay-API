@@ -1,4 +1,4 @@
-name: Deploy Laravel App
+name: 🚀 Deploy Laravel API
 
 on:
   push:
@@ -10,19 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repo
+      - name: 📥 Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🔐 Setup SSH
+      - name: 🔐 Setup SSH agent
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: 🚚 Deploy to PlanetHoster
+      - name: 📌 Add PlanetHoster to known_hosts
+        run: |
+          mkdir -p C:\Users\mthsm\.ssh
+          ssh-keyscan -p 5022 node165-eu.n0c.com >> C:\Users\mthsm\.ssh/known_hosts
+
+      - name: 🚀 Deploy to PlanetHoster
         run: |
           ssh -T -p 5022 jnngjdpt@node165-eu.n0c.com << 'EOF'
-          cd ~/relay-api
-          git pull origin master
-          ~/bin/php ~/bin/composer install --no-dev --optimize-autoloader
-          ~/bin/php artisan migrate --force
+            cd ~/relay-api
+            git pull origin master
+            ~/bin/php ~/bin/composer install --no-dev --optimize-autoloader
+            ~/bin/php artisan migrate --force
           EOF
