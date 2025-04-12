@@ -1,4 +1,4 @@
-name: 🚀 Deploy Laravel App
+name: Deploy Laravel App
 
 on:
   push:
@@ -6,23 +6,8 @@ on:
       - main
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout repo
-        uses: actions/checkout@v3
-
-      - name: 🔐 Setup SSH
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-
-      - name: 🚚 Deploy to PlanetHoster
-        run: |
-          ssh -p 5022 jnngjdpt@node165-eu.n0c.com << 'EOF'
-          cd ~/relay-api
-          git pull origin master
-          ~/bin/php ~/bin/composer install --no-dev --optimize-autoloader
-          ~/bin/php artisan migrate --force
-          EOF
+      - name: Hello
+        run: echo "Workflow déclenché !"
