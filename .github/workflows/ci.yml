@@ -20,8 +20,8 @@ jobs:
 
       - name: 📌 Add PlanetHoster to known_hosts
         run: |
-          mkdir -p C:\Users\mthsm\.ssh
-          ssh-keyscan -p 5022 node165-eu.n0c.com >> C:\Users\mthsm\.ssh/known_hosts
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 5022 node165-eu.n0c.com >> ~/.ssh/known_hosts
 
       - name: 🚀 Deploy to PlanetHoster
         run: |
