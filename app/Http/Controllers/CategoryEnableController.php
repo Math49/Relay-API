@@ -91,7 +91,7 @@ class CategoryEnableController extends Controller
             if($categoryEnable){
                 $request->validated();
 
-                $categoryEnable->Category_position = $request->Category_position ? $request->Category_position : $categoryEnable->Category_position;
+                $categoryEnable->Category_position = $request->Category_position;
                 $categoryEnable->save();
                 
                 return response()->json($categoryEnable, 200);
