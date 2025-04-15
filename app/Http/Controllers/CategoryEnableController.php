@@ -35,7 +35,7 @@ class CategoryEnableController extends Controller
         try{
 
 
-            $categories = CategoryEnable::where('ID_store', $id_store)->get();
+            $categories = CategoryEnable::where('ID_store', $id_store)->orderBy('Category_position')->get();
 
             if($categories->isEmpty()){
                 return response()->json([
@@ -71,7 +71,8 @@ class CategoryEnableController extends Controller
             $categoryEnable->ID_category = $request->ID_category;
             $categoryEnable->ID_store = $id_store;
             $categoryEnable->Category_position = $request->Category_position;
-            
+            $categoryEnable->save();
+
             return response()->json($categoryEnable, 201);
 
         }catch(Exception $e){
