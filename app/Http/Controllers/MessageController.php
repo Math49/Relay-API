@@ -6,6 +6,7 @@ use App\Http\Requests\MessageRequest;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Message;
+use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
@@ -88,19 +89,21 @@ class MessageController extends Controller
     public function CreateMessage(MessageRequest $request)
     {
         try{
-            
-            $request->validated();
+        $request->validated();
 
-            $message = new Message();
-            $message->Message = $request->Message;
-            $message->Creation_date = $request->Creation_date;
-            $message->Deletion_date = $request->Deletion_date;
-            $message->ID_store = $request->ID_store;
-            $message->save();
+        $message = new Message();
+        $message->Message = $request->Message;
+        $message->Creation_date = $request->Creation_date;
+        $message->Deletion_date = $request->Deletion_date;
+        $message->ID_store = $request->ID_store;
+        $message->save();
 
-            return response()->json($message, 201);
-
+        return response()->json($message, 201);
         }catch(Exception $e){
+            Log::error('Erreur lors de la création du message', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json([
                 'message' => 'Erreur lors de la création du message',
                 'error' => $e->getMessage()
