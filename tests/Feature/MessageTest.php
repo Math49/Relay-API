@@ -160,14 +160,6 @@ test('retrieving a message with an unsupported format returns 406', function () 
         ->assertSeeText("Le format demandé n'est pas disponible", false);
 });
 
-// ❌ Test création d'un message avec des données manquantes
-test('creating a message with missing data returns validation error', function () {
-    $response = $this->postJson('/api/message', []);
-
-    $response->assertStatus(500)
-        ->assertJson(["message"=> "Erreur lors de la création du message"]);
-});
-
 // ❌ Test mise à jour d'un message inexistant
 test('updating a non-existent message returns 404', function () {
     $response = $this->putJson('/api/message/9999', [

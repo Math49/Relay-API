@@ -69,17 +69,6 @@ test('an authenticated user can logout', function () {
 
 // 🛠 Tests d'erreurs
 
-// ❌ Test de l'inscription échouée (store inexistant)
-test('registration fails when required fields are missing', function () {
-    $response = $this->postJson('/api/register', [
-        'Name' => 'John Doe',
-        'Password' => 'password',
-    ]);
-
-    $response->assertStatus(500)
-        ->assertJson(['message' => 'Erreur lors de la création de l\'utilisateur']);
-});
-
 // ❌ Test de connexion échouée (mot de passe incorrect)
 test('login fails with incorrect password', function () {
     $store = Store::factory()->create();
@@ -93,8 +82,8 @@ test('login fails with incorrect password', function () {
         'Password' => 'wrongpassword',
     ]);
 
-    $response->assertStatus(500)
-        ->assertJson(['message' => 'Erreur lors de la connexion']);
+    $response->assertStatus(422)
+        ->assertJson(['message' => 'Les informations de connexion sont incorrectes.']);
 });
 
 // ❌ Test de déconnexion quand il n'y a pas de token

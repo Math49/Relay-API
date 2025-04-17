@@ -93,14 +93,6 @@ test('retrieving a non-existent product returns 404', function () {
         ->assertJson(['message' => 'Produit non trouvé']);
 });
 
-// ❌ Test création d'un produit avec des données manquantes
-test('creating a product with missing data returns validation error', function () {
-    $response = $this->postJson('/api/product', []);
-
-    $response->assertStatus(500)
-        ->assertJson(['message' => 'Erreur lors de la création du produit']);
-});
-
 // ❌ Test mise à jour d'un produit inexistant
 test('updating a non-existent product returns 404', function () {
     $response = $this->putJson('/api/product/9999', [

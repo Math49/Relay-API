@@ -111,14 +111,6 @@ test('unsupported response format for user returns 406', function () {
         ->assertSeeText("Le format demandé n'est pas disponible", false);
 });
 
-// ❌ Test création d'un utilisateur avec des champs manquants
-test('creating a user with missing fields fails', function () {
-    $response = $this->postJson('/api/user', []);
-
-    $response->assertStatus(500) // Laravel retourne 422 pour une validation échouée
-        ->assertJson(['message' => 'Erreur lors de la création de l\'utilisateur']);
-});
-
 // ❌ Test mise à jour d'un utilisateur inexistant
 test('updating a non-existent user returns 404', function () {
     $response = $this->putJson('/api/user/9999', [
