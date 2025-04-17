@@ -77,8 +77,7 @@ class MessageController extends Controller
         $message->ID_store = $request->ID_store;
         $message->save();
 
-            return response()->json($message, 201);
-
+        return response()->json($message, 201);
     }
 
     // PUT /message/{ID_message}
