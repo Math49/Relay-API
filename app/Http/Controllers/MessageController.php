@@ -6,6 +6,7 @@ use App\Http\Requests\MessageRequest;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Message;
+use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
@@ -66,6 +67,7 @@ class MessageController extends Controller
     // POST /message
     public function CreateMessage(MessageRequest $request)
     {
+
         $request->validated();
 
         $message = new Message();
@@ -75,7 +77,8 @@ class MessageController extends Controller
         $message->ID_store = $request->ID_store;
         $message->save();
 
-        return response()->json($message, 201);
+            return response()->json($message, 201);
+
     }
 
     // PUT /message/{ID_message}
