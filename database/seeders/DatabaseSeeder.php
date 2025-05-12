@@ -30,8 +30,8 @@ class DatabaseSeeder extends Seeder
 
         // 🔹 Création des magasins avec des utilisateurs
         $stores = Store::factory(5)
-            ->has(User::factory()->admin()->count(1), 'users') // 1 admin par magasin
-            ->has(User::factory()->count(2), 'users') // 2 utilisateurs normaux par magasin
+            ->has(User::factory()->admin()->count(1), 'users')
+            ->has(User::factory()->count(2), 'users')
             ->create();
 
         // 🔹 Création des catégories
