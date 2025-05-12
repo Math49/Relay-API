@@ -1,66 +1,197 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📦 Relay API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Bienvenue sur **Relay API**, l'API RESTful développée en **Laravel 11** pour la gestion des magasins, des stocks, des produits, des listes de commande et des messages d'information dans le réseau Relay.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Fonctionnalités principales
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Gestion des **comptes utilisateurs** (authentification Sanctum)
+- Gestion des **magasins** (stores)
+- Gestion des **produits** (products)
+- Gestion des **stocks** magasin par produit
+- Création de **listes de commandes** avec produits associés
+- Système de **messages** personnalisés par magasin
+- **Gestion des catégories activées** par magasin
+- API sécurisée avec **Laravel Sanctum**
+- Déploiement **CI/CD** sur **PlanetHoster** via **GitHub Actions**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Technologies utilisées
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- [Laravel 11](https://laravel.com/)
+- [MySQL](https://www.mysql.com/)
+- [PHP 8.2+](https://www.php.net/)
+- [Sanctum](https://laravel.com/docs/11.x/sanctum)
+- [GitHub Actions](https://github.com/features/actions) pour le CI/CD
+- Hébergement : **PlanetHoster**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙️ Installation locale
 
-## Laravel Sponsors
+1. **Cloner le projet :**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/Math49/Relay-API.git
+cd Relay-API
+```
 
-### Premium Partners
+2. **Installer les dépendances :**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+composer install
+```
 
-## Contributing
+3. **Copier le fichier d'environnement et configurer votre `.env` :**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+```
+**À configurer :**
+- Base de données MySQL (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`)
+- Sanctum (`SANCTUM_STATEFUL_DOMAINS`, `SESSION_DOMAIN`, etc.)
 
-## Code of Conduct
+4. **Générer la clé d'application :**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+5. **Lancer les migrations et les seeders :**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan migrate:fresh --seed
+```
 
-## License
+6. **Démarrer le serveur local :**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan serve
+```
+
+L'API sera accessible sur [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 🧪 Lancer les tests
+
+Le projet utilise **PestPHP** pour les tests.
+
+```bash
+./vendor/bin/pest
+```
+
+---
+
+## 🔐 Authentification
+
+Toutes les routes API (sauf `/api/login` et `/api/register`) sont protégées via **Sanctum**.
+
+- **Se connecter** : `POST /api/login`
+- **Se déconnecter** : `POST /api/logout`
+- Le token reçu doit être utilisé dans le header `Authorization: Bearer {token}` pour toutes les requêtes protégées.
+
+---
+
+## 📊 Liste Complète des Routes Relay API
+
+### 🔐 Authentification
+
+| Méthode | URL           | Description                   |
+|:---------|:--------------|:------------------------------|
+| POST     | `/api/register` | Création d'un utilisateur      |
+| POST     | `/api/login`    | Connexion                     |
+| POST     | `/api/logout`   | Déconnexion                   |
+
+---
+
+### 🏢 Gestion des magasins (Stores)
+
+| Méthode | URL                    | Description                      |
+|:---------|:-----------------------|:---------------------------------|
+| GET      | `/api/stores`           | Liste de tous les magasins       |
+| GET      | `/api/store/{id}`       | Détails d'un magasin par ID      |
+| POST     | `/api/store`            | Création d'un magasin            |
+| PUT      | `/api/store/{id}`       | Mise à jour d'un magasin        |
+| DELETE   | `/api/store`            | Suppression d'un magasin (ID via body) |
+
+---
+
+### 🌍 Gestion des produits (Products)
+
+| Méthode | URL                    | Description                      |
+|:---------|:-----------------------|:---------------------------------|
+| GET      | `/api/products`         | Liste de tous les produits       |
+| GET      | `/api/product/{id}`     | Détails d'un produit par ID      |
+| POST     | `/api/product`          | Création d'un produit            |
+| PUT      | `/api/product/{id}`     | Mise à jour d'un produit         |
+| DELETE   | `/api/product`          | Suppression d'un produit (ID via body) |
+
+---
+
+### 👥 Gestion des stocks (Stocks)
+
+| Méthode | URL                              | Description                      |
+|:---------|:---------------------------------|:---------------------------------|
+| GET      | `/api/stocks`                    | Liste de tous les stocks         |
+| GET      | `/api/stock/{ID_store}`           | Liste des stocks d'un magasin    |
+| GET      | `/api/stock/{ID_store}/{ID_product}` | Détail du stock pour un produit dans un magasin |
+| POST     | `/api/stock`                      | Créer un stock                  |
+| POST     | `/api/stocks`                     | Créer plusieurs stocks          |
+| PUT      | `/api/stock/{ID_store}/{ID_product}` | Mettre à jour un stock          |
+| PUT      | `/api/stocks/{ID_store}`           | Mettre à jour plusieurs stocks |
+| DELETE   | `/api/stock`                      | Supprimer un stock (IDs via body) |
+
+---
+
+### 📒 Gestion des listes de commande (Lists)
+
+| Méthode | URL                              | Description                      |
+|:---------|:---------------------------------|:---------------------------------|
+| GET      | `/api/lists`                     | Liste de toutes les listes       |
+| GET      | `/api/list/{ID_store}`            | Listes d'un magasin              |
+| GET      | `/api/list/{ID_store}/{ID_list}`   | Détail d'une liste spécifique    |
+| POST     | `/api/list`                       | Création d'une liste             |
+| PUT      | `/api/list`                       | Mise à jour d'une liste          |
+| DELETE   | `/api/list`                       | Suppression d'une liste          |
+
+---
+
+### 💬 Gestion des messages (Messages)
+
+| Méthode | URL                              | Description                      |
+|:---------|:---------------------------------|:---------------------------------|
+| GET      | `/api/messages`                  | Liste de tous les messages       |
+| GET      | `/api/messages/{ID_store}`        | Messages d'un magasin            |
+| GET      | `/api/messages/{ID_store}/{ID_message}` | Détail d'un message             |
+| POST     | `/api/message`                    | Création d'un message            |
+| PUT      | `/api/message/{ID_message}`       | Mise à jour d'un message        |
+| DELETE   | `/api/message/{ID_message}`       | Suppression d'un message         |
+
+---
+
+### 📆 Gestion des catégories activées (Categories Enable)
+
+| Méthode | URL                              | Description                      |
+|:---------|:---------------------------------|:---------------------------------|
+| GET      | `/api/categoryEnable/{ID_store}`  | Catégories activées d'un magasin |
+| POST     | `/api/categoryEnable/{ID_store}`  | Créer une catégorie activée     |
+| PUT      | `/api/categoryEnable/{ID_store}`  | Mettre à jour une catégorie activée |
+| DELETE   | `/api/categoryEnable`             | Supprimer une catégorie activée (IDs via body) |
+
+> ✨ Toutes les routes (sauf login/register) sont **protégées par Sanctum**.
+
+---
+
+## 🚀 Déploiement CI/CD sur PlanetHoster
+
+Relay-API est automatiquement déployé sur PlanetHoster à chaque push sur `master` via **GitHub Actions**.
+
+> Configuration personnalisée avec connexion SSH (à travers port 5022) et installation automatique des dépendances Laravel.
+
+## 👤 Auteur
+**Développé par** Mathis Mercier
+**Contact :** mthsmercier@gmail.com
+

@@ -112,14 +112,6 @@ test('unsupported response format for category returns 406', function () {
         ->assertSeeText('Le format demandé n\'est pas disponible', false);
 });
 
-// ❌ Test création d'une catégorie avec des données manquantes
-test('creating a category with missing data returns validation error', function () {
-    $response = $this->postJson('/api/category', []);
-
-    $response->assertStatus(500)
-        ->assertJson(['message'=> 'Erreur lors de la création de la catégorie']);
-});
-
 // ❌ Test mise à jour d'une catégorie inexistante
 test('updating a non-existent category returns 404', function () {
     $response = $this->putJson('/api/category/9999', [

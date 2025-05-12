@@ -33,10 +33,8 @@ test('an authenticated user can retrieve all stocks', function () {
 // ✅ Test récupération d'un stock par magasin
 test('an authenticated user can retrieve stocks for a specific store', function () {
     $store = Store::factory()->create();
-    Stock::factory(3)->create(['ID_store' => $store->ID_store]);
-
+    $stocks = Stock::factory(3)->create(['ID_store' => $store->ID_store]);
     $response = $this->getJson("/api/stock/{$store->ID_store}");
-
     $response->assertStatus(200)
         ->assertJsonCount(3);
 });
@@ -245,22 +243,6 @@ test('unsupported response format for a single stock returns 406', function () {
 
     $response->assertStatus(406)
         ->assertSeeText('Le format demandé n\'est pas disponible', false);
-});
-
-// ❌ Test création d'un stock avec des données manquantes
-test('creating a stock with missing data returns validation error', function () {
-    $response = $this->postJson('/api/stock', []);
-
-    $response->assertStatus(500)
-        ->assertJson(['message' => 'Erreur lors de la création du stock']);
-});
-
-// ❌ Test création de plusieurs stocks avec des données manquantes
-test('creating multiple stocks with missing data returns validation error', function () {
-    $response = $this->postJson('/api/stocks', []);
-
-    $response->assertStatus(500)
-        ->assertJson(['message' => 'Erreur lors de la création des stocks']);
 });
 
 // ❌ Test mise à jour d'un stock inexistant

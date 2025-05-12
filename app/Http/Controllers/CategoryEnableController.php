@@ -11,127 +11,90 @@ class CategoryEnableController extends Controller
 {
 
     // GET /categoryEnables
-    public function AllCategoryEnable(CategoryEnableRequest $request){
-        try{
+    public function AllCategoryEnable(CategoryEnableRequest $request)
+    {
 
-            $categories = CategoryEnable::all()->load('category');
-            
-            if($request->header('Accept') === 'application/json'){
-                return response()->json($categories);
-            } else {
-                return response("Le format demandé n'est pas disponible", 406);
-            }
+        $categories = CategoryEnable::all()->load('category');
 
-        }catch(Exception $e){
-            return response()->json([
-                'message' => 'Erreur lors de la récupération des catégories',
-                'error' => $e->getMessage()
-            ], 500);
+        if ($request->header('Accept') === 'application/json') {
+            return response()->json($categories);
+        } else {
+            return response("Le format demandé n'est pas disponible", 406);
         }
     }
 
     // GET /categoryEnable/{id_store}
-    public function CategoryEnable(CategoryEnableRequest $request, $id_store){
-        try{
+    public function CategoryEnable(CategoryEnableRequest $request, $id_store)
+    {
 
 
-            $categories = CategoryEnable::where('ID_store', $id_store)->orderBy('Category_position')->get();
+        $categories = CategoryEnable::where('ID_store', $id_store)->orderBy('Category_position')->get();
 
-            if($categories->isEmpty()){
-                return response()->json([
-                    'message' => 'Catégorie non trouvée'
-                ], 404);
-            }
-            
-            $categories->load('category');
-
-            if($request->header('Accept') === 'application/json'){
-                return response()->json($categories);
-            } else {
-                return response("Le format demandé n'est pas disponible", 406);
-            }
-            
-
-        }catch(Exception $e){
+        if ($categories->isEmpty()) {
             return response()->json([
-                'message' => 'Erreur lors de la récupération de la catégorie',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Catégorie non trouvée'
+            ], 404);
+        }
+
+        $categories->load('category');
+
+        if ($request->header('Accept') === 'application/json') {
+            return response()->json($categories);
+        } else {
+            return response("Le format demandé n'est pas disponible", 406);
         }
     }
 
     // POST /categoryEnable/{ID_store}
-    public function CreateCategoryEnable(CategoryEnableRequest $request, $id_store){
-        try{
+    public function CreateCategoryEnable(CategoryEnableRequest $request, $id_store)
+    {
 
-            $request->validated();
+        $request->validated();
 
-            $categoryEnable = new CategoryEnable();
+        $categoryEnable = new CategoryEnable();
 
-            $categoryEnable->ID_category = $request->ID_category;
-            $categoryEnable->ID_store = $id_store;
-            $categoryEnable->Category_position = $request->Category_position;
-            $categoryEnable->save();
+        $categoryEnable->ID_category = $request->ID_category;
+        $categoryEnable->ID_store = $id_store;
+        $categoryEnable->Category_position = $request->Category_position;
+        $categoryEnable->save();
 
-            return response()->json($categoryEnable, 201);
-
-        }catch(Exception $e){
-            return response()->json([
-                'message' => 'Erreur lors de la création de la catégorie',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json($categoryEnable, 201);
     }
 
     // PUT /categoryEnable/{ID_store}/{ID_category}
-    public function UpdatecategoryEnable(CategoryEnableRequest $request, $id_store, $id_category){
-        try{
+    public function UpdatecategoryEnable(CategoryEnableRequest $request, $id_store, $id_category)
+    {
+        $categoryEnable = CategoryEnable::where('ID_store', $id_store)->where('ID_category', $id_category)->first();
 
-            $categoryEnable = CategoryEnable::where('ID_store', $id_store)->where('ID_category', $id_category)->first();
+        if ($categoryEnable) {
+            $request->validated();
 
-            if($categoryEnable){
-                $request->validated();
+            $categoryEnable->Category_position = $request->Category_position;
+            $categoryEnable->save();
 
-                $categoryEnable->Category_position = $request->Category_position;
-                $categoryEnable->save();
-                
-                return response()->json($categoryEnable, 200);
-            } else {
-                return response()->json([
-                    'message' => 'Catégorie non trouvée'
-                ], 404);
-            }
-
-        }catch(Exception $e){
+            return response()->json($categoryEnable, 200);
+        } else {
             return response()->json([
-                'message' => 'Erreur lors de la mise à jour de la catégorie',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Catégorie non trouvée'
+            ], 404);
         }
     }
 
-     // DELETE /categoryEnable
-     public function DeleteCategoryEnable(CategoryEnableRequest $request){
-        try{
-            $categoryEnable = CategoryEnable::where('ID_category', $request->ID_category)->where('ID_store', $request->ID_store)->first();
+    // DELETE /categoryEnable
+    public function DeleteCategoryEnable(CategoryEnableRequest $request)
+    {
+        $categoryEnable = CategoryEnable::where('ID_category', $request->ID_category)->where('ID_store', $request->ID_store)->first();
 
-            if($categoryEnable){
-                $categoryEnable->delete();
-                
-                return response()->json([
-                    'message' => 'Catégorie supprimée avec succès'
-                ]);
-            } else {
-                return response()->json([
-                    'message' => 'Catégorie non trouvée'
-                ], 404);
-            }
+        if ($categoryEnable) {
+            $categoryEnable->delete();
 
-        }catch(Exception $e){
             return response()->json([
-                'message' => 'Erreur lors de la suppression de la catégorie',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Catégorie supprimée avec succès'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Catégorie non trouvée'
+            ], 404);
         }
     }
 }

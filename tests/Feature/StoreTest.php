@@ -110,14 +110,6 @@ test('retrieving a store with an unsupported format returns 406', function () {
         ->assertSee('Le format demandé n\'est pas disponible', false);
 });
 
-// ❌ Test création d'un magasin avec des champs manquants → 422
-test('creating a store with missing fields returns 422', function () {
-    $response = $this->postJson('/api/store', []); // Aucune donnée envoyée
-
-    $response->assertStatus(500)
-        ->assertJson(['message' => 'Erreur lors de la création du magasin']);
-});
-
 // ❌ Test mise à jour d'un magasin inexistant → 404
 test('updating a non-existent store returns 404', function () {
     $response = $this->putJson('/api/store/9999', [

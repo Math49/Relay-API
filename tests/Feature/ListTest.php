@@ -206,18 +206,10 @@ test('unsupported response format for a list returns 406', function () {
         ->assertSeeText('Le format demandé n\'est pas disponible', false);
 });
 
-// ❌ Test création d'une liste avec des données manquantes
-test('creating a list with missing data returns validation error', function () {
-    $response = $this->postJson('/api/list', []);
-
-    $response->assertStatus(500)
-        ->assertJson(['message'=> 'Erreur lors de la création de la liste']);
-});
-
-
 // ❌ Test mise à jour d'une liste inexistante
 test('updating a non-existent list returns 404', function () {
-    $response = $this->putJson('/api/list/9999', [
+    $response = $this->putJson('/api/list', [
+        'ID_list' => 9999,
         'Creation_date' => now()->toDateString(),
         'products' => []
     ]);

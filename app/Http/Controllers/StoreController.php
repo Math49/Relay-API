@@ -10,124 +10,90 @@ use App\Models\Store;
 class StoreController extends Controller
 {
     // GET /stores
-    public function AllStores(StoreRequest $request){
-        try{
-            $stores = Store::all();
-            
-            if($request->header('Accept') === 'application/json'){
-                return response()->json($stores);
-            } else {
-                return response("Le format demandé n'est pas disponible", 406);
-            }
+    public function AllStores(StoreRequest $request)
+    {
+        $stores = Store::all();
 
-        }catch(Exception $e){
-            return response()->json([
-                'message' => 'Erreur lors de la récupération des magasins',
-                'error' => $e->getMessage()
-            ], 500);
+        if ($request->header('Accept') === 'application/json') {
+            return response()->json($stores);
+        } else {
+            return response("Le format demandé n'est pas disponible", 406);
         }
     }
 
     // GET /store/{id}
-    public function StoreByID(StoreRequest $request, $id){
-        try{
-            $store = Store::find($id);
+    public function StoreByID(StoreRequest $request, $id)
+    {
+        $store = Store::find($id);
 
-            if (!$store) { // Vérification avant d'exécuter load()
-                return response()->json([
-                    'message' => 'Magasin non trouvé'
-                ], 404);
-            }
-
-            $store->load('categoriesEnabled','stocks.product');
-
-            
-            if($request->header('Accept') === 'application/json'){
-                return response()->json($store);
-            } else {
-                return response("Le format demandé n'est pas disponible", 406);
-            }
-
-        }catch(Exception $e){
+        if (!$store) { // Vérification avant d'exécuter load()
             return response()->json([
-                'message' => 'Erreur lors de la récupération du magasin',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Magasin non trouvé'
+            ], 404);
+        }
+
+        $store->load('categoriesEnabled', 'stocks.product');
+
+
+        if ($request->header('Accept') === 'application/json') {
+            return response()->json($store);
+        } else {
+            return response("Le format demandé n'est pas disponible", 406);
         }
     }
 
     // POST /store
-    public function createStore(StoreRequest $request){
-        try{
-            $request->validated();
+    public function createStore(StoreRequest $request)
+    {
+        $request->validated();
 
-            $store = new Store();
-            $store->Address = $request->Address;
-            $store->Phone = $request->Phone;
-            $store->Manager_name = $request->Manager_name;
-            $store->Manager_phone = $request->Manager_phone;
-            $store->save();
+        $store = new Store();
+        $store->Address = $request->Address;
+        $store->Phone = $request->Phone;
+        $store->Manager_name = $request->Manager_name;
+        $store->Manager_phone = $request->Manager_phone;
+        $store->save();
 
-            return response()->json($store, 201);
-
-        }catch(Exception $e){
-            return response()->json([
-                'message' => 'Erreur lors de la création du magasin',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json($store, 201);
     }
 
     // PUT /store/{id}
-    public function updateStore(StoreRequest $request, $id){
-        try{
+    public function updateStore(StoreRequest $request, $id)
+    {
 
+        $store = Store::find($id);
 
-            $store = Store::find($id);
+        if ($store) {
+            $request->validated();
 
-            if($store){
-                $request->validated();
+            $store->Address = $request->Address ? $request->Address : $store->Address;
+            $store->Phone = $request->Phone ? $request->Phone : $store->Phone;
+            $store->Manager_name = $request->Manager_name ? $request->Manager_name : $store->Manager_name;
+            $store->Manager_phone = $request->Manager_phone ? $request->Manager_phone : $store->Manager_phone;
+            $store->save();
 
-                $store->Address = $request->Address ? $request->Address : $store->Address;
-                $store->Phone = $request->Phone ? $request->Phone : $store->Phone;
-                $store->Manager_name = $request->Manager_name ? $request->Manager_name : $store->Manager_name;
-                $store->Manager_phone = $request->Manager_phone ? $request->Manager_phone : $store->Manager_phone;
-                $store->save();
-
-                return response()->json($store, 200);
-            } else {
-                return response()->json([
-                    'message' => 'Magasin non trouvé'
-                ], 404);
-            }
-        }catch(Exception $e){
+            return response()->json($store, 200);
+        } else {
             return response()->json([
-                'message' => 'Erreur lors de la mise à jour du magasin',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Magasin non trouvé'
+            ], 404);
         }
     }
 
     // DELETE /store
-    public function deleteStore(StoreRequest $request){
-        try{
-            $store = Store::find($request->ID_store);
+    public function deleteStore(StoreRequest $request)
+    {
+        $store = Store::find($request->ID_store);
 
-            if($store){
-                $store->delete();
-                return response()->json([
-                    'message' => 'Magasin supprimé avec succès'
-                ]);
-            } else {
-                return response()->json([
-                    'message' => 'Magasin non trouvé'
-                ], 404);
-            }
-        }catch(Exception $e){
+        if ($store) {
+            $store->delete();
             return response()->json([
-                'message' => 'Erreur lors de la suppression du magasin',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Magasin supprimé avec succès'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Magasin non trouvé'
+            ], 404);
         }
     }
 }
